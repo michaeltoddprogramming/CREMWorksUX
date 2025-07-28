@@ -1,0 +1,87 @@
+:root {
+  --primary: #2d6cdf;
+  --background: #f8f9fa;
+  --text: #222;
+  --border-radius: 8px;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, Arial, sans-serif;
+  background: var(--background);
+  color: var(--text);
+}
+
+header {
+  background: var(--primary);
+  color: #fff;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: text-decoration 0.2s;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+h1, h2 {
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+
+form {
+  background: #fff;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  max-width: 350px;
+  margin: 2rem auto;
+}
+
+label {
+  display: block;
+  margin-bottom: 1em;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.5em;
+  margin-top: 0.25em;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+}
+
+button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 0.75em 1.5em;
+  border-radius: var(--border-radius);
+  font-size: 1em;
+  cursor: pointer;
+  margin-top: 1em;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #1a4fa0;
+}
+
+p {
+  margin-top: 1em;
+  text-align: center;
+}
