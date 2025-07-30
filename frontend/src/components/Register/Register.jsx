@@ -4,10 +4,26 @@ import { Link } from 'react-router-dom';
 function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Registering: ${username}`);
+    setMsg('');
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMsg(data.message);
+      } else {
+        setMsg(data.error);
+      }
+    } catch {
+      setMsg('Network error');
+    }
   };
 
   return (
@@ -39,6 +55,7 @@ function Register() {
       <p>
         Already have an account? <Link to="/login">Login</Link>
       </p>
+      {msg && <p>{msg}</p>}
     </form>
   );
 }
