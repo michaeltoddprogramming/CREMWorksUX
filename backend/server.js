@@ -18,6 +18,15 @@ app.use((req, res) => {
   res.status(404).send('Not Found');
 });
 
+
+
+// LOGIN BACKEND
+
+
+
+
+// REGISTER BACKEND
+
 app.listen(PORT, () => {
   console.log(`BACKEND RUNNING http://localhost:${PORT}`);
 });
