@@ -1,42 +1,141 @@
 const express = require('express');
+const bcrypt = require('bcryptjs');
+const { MongoClient } = require('mongodb');
+const dotenv = require('dotenv');
+const path = require('path');
+
+// const express = require('express');
+// const app = express();
+// const PORT = 3000;
+
+
+dotenv.config();
+
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
+const client = new MongoClient(process.env.MONGO_URI);
+let db;
+
+
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,POST');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,POST');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
 });
 
-// STORING IN TEMPORARY MEMORY
-const users = [];
+// Connect to MongoDB
+async function connectDatabase() 
+{
+    try 
+    {
+        await client.connect();
+        // db = client.db("CREM Works");
+        db = client.db("Database");
+        console.log("Connected to MongoDB");
+    }
+    catch (err) 
+    {
+        console.error("Failed to connect to MongoDB", err);
+    }
+}
+connectDatabase();
 
-app.post('/api/register', (req, res) => {
-  const { username, password } = req.body;
-  if (users.find(u => u.username === username)) {
-    return res.status(400).json({ error: 'User already exists' });
-  }
-  users.push({ username, password });
-  res.json({ success: true, message: 'Registered successfully' });
+// ==============================
+// ====  Helper functions =======
+// ==============================
+
+async function generateUserId() 
+{
+    const users = await db.collection("users").find({}).toArray();
+    if (users.length === 0)
+    {
+        return 1;
+    }
+    
+    const maxId = Math.max(...users.map(u => u.id || 0));
+    return maxId + 1;
+}
+
+// ==============================
+// ======   Endpoints  ==========
+// ==============================
+
+app.post('/api/register', async (req, res) => {
+    const { username, password, email } = req.body;
+
+    try 
+    {
+        const existing = await db.collection("users").findOne({ email });
+
+        if (existing) 
+        {
+            return res.status(400).json({status: "failed", message: "Email already in use" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = {
+            id: await generateUserId(),
+            username,
+            email,
+            password: hashedPassword
+        };
+
+        await db.collection("users").insertOne(newUser);
+
+        res.status(201).json({status: "success", message: "User registered successfully" });
+    }
+    catch (err) 
+    {
+        res.status(500).json({status: "failed", message: "Error registering user", error: err.message });
+    }
 });
 
-app.post('/api/login', (req, res) => {
-  const { username, password } = req.body;
-  const user = users.find(u => u.username === username && u.password === password);
-  if (user) {
-    res.json({ success: true, message: 'Login successful' });
-  } else {
-    res.status(401).json({ error: 'Invalid credentials' });
-  }
+
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+
+    try 
+    {
+        if(!email || !password)
+        {
+            return res.status(400).json({ status: "failed", message: "Email and password are required" });
+
+        }
+
+        const user = await db.collection("users").findOne({ email });
+
+        if (!user) 
+        {
+            return res.status(400).json({status: "failed", message: "Email incorrect" });
+        }
+
+        const match = await bcrypt.compare(password, user.password);
+        
+        if(!match)
+        {
+            return res.status(401).json({status: "failed", message: "Password incorrect" });
+        }
+
+        // const hashedPassword = await bcrypt.hash(password, 10);
+
+        res.status(200).json({status: "success", message: "Login successful" });
+    }
+    catch (err) 
+    {
+        res.status(500).json({status: "failed", message: "Error with Login", error: err.message });
+    }
 });
 
 app.use((req, res) => {
-  res.status(404).send('Not Found');
+    res.status(404).send('Not Found');
 });
 
 app.listen(PORT, () => {
-  console.log(`BACKEND RUNNING http://localhost:${PORT}`);
+    console.log(`BACKEND RUNNING http://localhost:${PORT}`);
 });
+
