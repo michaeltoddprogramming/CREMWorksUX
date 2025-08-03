@@ -65,24 +65,23 @@ async function generateUserId()
 // ==============================
 
 app.post('/api/register', async (req, res) => {
-    const { username, password, email } = req.body;
+    const { username, password } = req.body;
 
     try 
     {
-        const existing = await db.collection("users").findOne({ email });
+        const existing = await db.collection("users").findOne({ username });
 
         if (existing) 
         {
-            return res.status(400).json({status: "failed", message: "Email already in use" });
+            return res.status(400).json({status: "failed", message: "Username already in use" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // const hashedPassword = await bcrypt.hash(password, 10);
 
         const newUser = {
             id: await generateUserId(),
             username,
-            email,
-            password: hashedPassword
+            password: password
         };
 
         await db.collection("users").insertOne(newUser);
@@ -97,26 +96,26 @@ app.post('/api/register', async (req, res) => {
 
 
 app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     try 
     {
-        if(!email || !password)
+        if(!username || !password)
         {
-            return res.status(400).json({ status: "failed", message: "Email and password are required" });
+            return res.status(400).json({ status: "failed", message: "Username and password are required" });
 
         }
 
-        const user = await db.collection("users").findOne({ email });
+        const user = await db.collection("users").findOne({ username });
 
         if (!user) 
         {
-            return res.status(400).json({status: "failed", message: "Email incorrect" });
+            return res.status(400).json({status: "failed", message: "Username incorrect" });
         }
 
-        const match = await bcrypt.compare(password, user.password);
+        // const match = await bcrypt.compare(password, user.password);
         
-        if(!match)
+        if(password !== user.password)
         {
             return res.status(401).json({status: "failed", message: "Password incorrect" });
         }

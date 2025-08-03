@@ -20,7 +20,7 @@ function Register() {
       if (res.ok) {
         setMsg(data.message);
       } else {
-        setMsg(data.error);
+        setMsg(data.message);
       }
     } catch {
       setMsg('Network error');
