@@ -5,6 +5,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'FishyFont';
+  src: url('../assets/fonts/Toucon__.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --primary: #2d6cdf;
   --background: #f8f9fa;
@@ -23,9 +30,12 @@ body {
 header {
   background: var(--primary);
   background-color: #1A2A80;
-  height: 30px;
+  height: 70px;
   padding: 10px;
   margin: 0;
+
+  justify-content: center;
+  align-content: center;
 }
 
 nav {
@@ -37,7 +47,7 @@ nav {
 nav a {
   color: #fff;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 2rem;
   text-decoration: none;
   transition: text-decoration 0.2s;
 }

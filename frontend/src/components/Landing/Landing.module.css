@@ -3,7 +3,7 @@
     grid-template-columns: repeat(2, 1fr);
 
     overflow: hidden;
-    height: calc(100vh - 50px);
+    height: calc(100vh - 90px);
 }
 
 .leftContent {
@@ -57,7 +57,7 @@
     transform: translate(-50%, -50%);
     font-size: 38px;
     letter-spacing: 5px;
-    font-family: 'TitleFont';
+    font-family: 'FishyFont';
     font-size: 7rem;
 }
 

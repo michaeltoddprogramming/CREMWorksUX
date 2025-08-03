@@ -33,7 +33,7 @@ function Login() {
         <h2>Login</h2>
         <div>
           <label>
-            Username:
+            Username
             <input
               type="text"
               value={username}
@@ -44,7 +44,7 @@ function Login() {
         </div>
         <div>
           <label>
-            Password:
+            Password
             <input
               type="password"
               value={password}

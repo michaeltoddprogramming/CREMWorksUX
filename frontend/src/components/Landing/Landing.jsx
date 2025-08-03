@@ -14,7 +14,7 @@ function Landing() {
           There's something magical about casting a line into calm waters, the peace, the thrill, the stories that follow. Fishing isn't just a hobby to us, it's a way of life. Whether it's the early mornings, the big catches, or the quiet moments in nature, we love every bit of it.
         </div>
         <div className={styles.btn}>
-           <a href="/login" className={styles.linkButton}>Login or Register</a>
+           <a href="/login" className={styles.linkButton}>Sign-In</a>
         </div>
       </div>
     </div>

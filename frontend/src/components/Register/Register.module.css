@@ -1,7 +1,7 @@
 .container {
   background-image: url('../../assets/images/diagonal-waves.png');
   background-color: #074799;
-  height: calc(100vh - 50px);
+  height: calc(100vh - 90px);
   display: grid;
 }
 
@@ -90,8 +90,9 @@ form button:active {
 form p {
   margin-top: 1.5rem;
   text-align: center;
-  font-size: 0.95rem;
-  color: #113F67;
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 600;
 }
 
 form a {
@@ -103,11 +104,4 @@ form a {
 
 form a:hover {
   text-decoration: underline;
-}
-
-form p:last-of-type {
-  margin-top: 1.2rem;
-  font-weight: bold;
-  text-align: center;
-  color: red;
 }
