@@ -1,13 +1,14 @@
 import { Link } from 'react-router-dom';
+import styles from './Header.module.css';
 
 function Header() {
   return (
-    <header>
-      <nav>
-        <Link to="/">Landing</Link> |{' '}
-        <Link to="/about">About Us</Link> |{' '}
-        <Link to="/login">Login</Link> |{' '}
-        <Link to="/register">Register</Link>
+    <header className={styles.header}>
+      <nav className={styles.navbar}>
+        <Link to="/">Home</Link>
+        <Link to="/about">About Us</Link>
+        <Link to="/login">Login</Link>
+        {/*<Link to="/register">Register</Link>*/}
       </nav>
     </header>
   );
