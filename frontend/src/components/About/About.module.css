@@ -1,0 +1,207 @@
+h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    justify-self: center;
+    color: #fff;
+    text-align: center;
+    font-family: 'TitleFont';
+    margin: 0;
+    padding: 0;
+}
+
+.background {
+    font-size: 1.2rem;
+    color: #fff;
+    text-align: center;
+    justify-self: center;
+    align-self: center;
+    width: 80%;
+    font-family: 'Arial';
+    font-weight: bold;
+    padding-bottom: 3rem
+}
+
+.container {
+    height: calc(100vh - 90px);
+    
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.top {
+    grid-row: 1;
+    background-color: #074799;
+    height: 100%;
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 95%,
+        95% 97%,
+        90% 95%,
+        85% 97%,
+        80% 95%,
+        75% 97%,
+        70% 95%,
+        65% 97%,
+        60% 95%,
+        55% 97%,
+        50% 95%,
+        45% 97%,
+        40% 95%,
+        35% 97%,
+        30% 95%,
+        25% 97%,
+        20% 95%,
+        15% 97%,
+        10% 95%,
+        5% 97%,
+        0% 95%,
+        0% 0%
+  );
+}
+
+.team {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.avatar {
+  width: 80%; 
+  height: auto; 
+  max-height: 60%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.about {
+    font-size: 1.2rem;
+    color: #fff;
+    text-align: center;
+    justify-self: center;
+    width: 80%;
+    font-family: 'Arial';
+    font-weight: bold;
+}
+
+.cardOne, .cardTwo, .cardThree, .cardFour {
+  background-color: transparent;
+  width: 190px;
+  height: 254px;
+  perspective: 1000px;
+  font-family: sans-serif;
+
+  justify-self: center;
+  align-self: center; 
+  padding-bottom: 2rem;
+}
+
+.cardOne{
+    grid-column: 1;
+}
+
+.cardTwo{
+    grid-column: 2;
+}
+
+.cardThree{
+    grid-column: 3;
+}
+
+.cardFour{
+    grid-column: 4;
+}
+
+.titleFront {
+  font-size: 1.5em;
+  font-weight: 900;
+  font-family: 'TitleFont';
+  text-align: center;
+  margin: 0;
+}
+
+.titleBack{
+  font-size: 1.5em;
+  font-weight: 900;
+  font-family: 'TitleFont';
+  text-align: center;
+  margin: 0;
+}
+
+.innerOne, .innerTwo, .innerThree, .innerFour {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.cardOne:hover .innerOne,
+.cardTwo:hover .innerTwo,
+.cardThree:hover .innerThree,
+.cardFour:hover .innerFour {
+  transform: rotateY(180deg);
+}
+
+.frontOne, .backOne, .frontTwo, .backTwo,
+.backThree, .frontThree, .backFour, .frontFour {
+  box-shadow: 0 8px 14px 0 rgba(0,0,0,0.2);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.frontOne, .frontTwo, .frontThree, .frontFour {
+  background-blend-mode: overlay;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #fdd835,
+    #fdd835 15px,
+    #4fc3f7 15px,
+    #4fc3f7 30px,
+    #e57373 30px,
+    #e57373 45px,
+    #81c784 45px,
+    #81c784 60px
+  ), url(../../assets/images/45-degree-fabric-light.png);
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  padding: 1rem;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  background-size: 100% 100%;
+}
+
+.backOne, .backTwo, .backThree, .backFour {
+  background-blend-mode: overlay;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #fdd835,
+    #fdd835 15px,
+    #4fc3f7 15px,
+    #4fc3f7 30px,
+    #e57373 30px,
+    #e57373 45px,
+    #81c784 45px,
+    #81c784 60px
+  ), url(../../assets/images/45-degree-fabric-light.png);
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  padding: 1rem;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  background-size: 100% 100%;
+  transform: rotateY(180deg);
+}
+
+.bottom {
+    grid-row: 2;
+    background-color: #FCF8DD;
+}
