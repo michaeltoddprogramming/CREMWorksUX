@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const dotenv = require('dotenv');
 const path = require('path');
 
@@ -127,6 +127,30 @@ app.post('/api/login', async (req, res) => {
     catch (err) 
     {
         res.status(500).json({status: "failed", message: "Error with Login", error: err.message });
+    }
+});
+
+app.get('/api/products', async (req, res) => {
+    try {
+        const products = await db.collection("products").find({}).toArray();
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({ status: "failed", message: "Error fetching products", error: err.message });
+    }
+});
+
+app.get('/api/products/:id', async (req, res) => {
+    try {
+        if (!ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ error: "Invalid product ID" });
+        }
+        const product = await db.collection("products").findOne({ _id: new ObjectId(req.params.id) });
+        if (!product) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+        res.json(product);
+    } catch (err) {
+        res.status(500).json({ error: "Error fetching product", details: err.message });
     }
 });
 

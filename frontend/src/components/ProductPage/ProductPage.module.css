@@ -1,0 +1,114 @@
+.container {
+  max-width: 800px;
+  margin: 3rem auto;
+  background: #fff;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 16px rgba(7, 71, 153, 0.10);
+  padding: 2rem;
+  font-family: 'Montserrat', Arial, sans-serif;
+  position: relative;
+}
+
+.loading, .notFound {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #c62828;
+  margin-top: 2rem;
+}
+
+.backBtn {
+  position: absolute;
+  top: 1.5rem;
+  left: 2rem;
+  padding: 0.7rem 1.5rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(45, 108, 223, 0.08);
+  z-index: 2;
+}
+
+.backBtn:hover {
+  background: #1a4fa0;
+  transform: scale(1.05);
+}
+
+.card {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+
+.image {
+  width: 260px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 8px rgba(45, 108, 223, 0.08);
+  background: #f8f9fa;
+}
+
+.details {
+  flex: 1;
+}
+
+.title {
+  font-family: var(--title-font);
+  color: #074799;
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.brand {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #444;
+}
+
+.category {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #2d6cdf;
+  background: #e3f2fd;
+  padding: 0.2rem 0.7rem;
+  border-radius: 1rem;
+  display: inline-block;
+}
+
+.price {
+  margin-bottom: 0.5rem;
+  color: #c62828;
+  font-weight: bold;
+  background: #ffe4e4;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  display: inline-block;
+}
+
+.stock {
+  margin-bottom: 0.5rem;
+  color: #2e7d32;
+  font-weight: bold;
+  background: #e4f8e4;
+  padding: 0.3rem 0.7rem;
+  border-radius: 1rem;
+  display: inline-block;
+}
+
+.summary {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+  color: #555;
+}
+
+.description {
+  font-size: 1.15rem;
+  color: #222;
+}
