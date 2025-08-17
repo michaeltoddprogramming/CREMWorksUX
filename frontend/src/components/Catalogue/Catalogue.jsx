@@ -42,7 +42,6 @@ function Catalogue() {
 
   return (
     <div className={styles.catalogueContainer}>
-      <h1 className={styles.title}>🎣 Product Catalogue</h1>
       <div className={styles.filters}>
         <input
           className={styles.search}
@@ -61,7 +60,7 @@ function Catalogue() {
           ))}
         </select>
         <input
-          className={styles.price}
+          className={styles.filterPrice}
           type="number"
           min="0"
           placeholder="Min Price"
@@ -69,21 +68,21 @@ function Catalogue() {
           onChange={e => setMinPrice(e.target.value)}
         />
         <input
-          className={styles.price}
+          className={styles.filterPrice}
           type="number"
           min="0"
           placeholder="Max Price"
           value={maxPrice}
           onChange={e => setMaxPrice(e.target.value)}
         />
-        <label className={styles.stockLabel}>
+        {/*<label className={styles.stockLabel}>
           <input
             type="checkbox"
             checked={inStock}
             onChange={e => setInStock(e.target.checked)}
           />
           In Stock Only
-        </label>
+        </label>*/}
         <select
           className={styles.sort}
           value={sort}
@@ -100,34 +99,36 @@ function Catalogue() {
         )}
         {filtered.map(product => (
           <li key={product._id} className={styles.listItem}>
-            <div className={styles.cardHeader}>
+            <Link to={`/product/${product._id}`} className={styles.rowLink}>
               <div className={styles.imageWrapper}>
                 {product.image && (
-                  <img
+                  <img  
                     src={product.image}
                     alt={product.name}
                     className={styles.thumbnail}
                   />
                 )}
               </div>
-              <span className={styles.productName}>
-                <Link to={`/product/${product._id}`}>{product.name}</Link>
-              </span>
-              {product.stock > 0 ? (
-                <span className={styles.stockBadge}>In Stock</span>
-              ) : (
-                <span className={styles.stockBadgeOut}>Out of Stock</span>
-              )}
-            </div>
-            <div className={styles.info}>
-              <span className={styles.brand}>{product.brand}</span>
-              <span className={styles.category}>{product.category}</span>
-              <span className={styles.price}>R{product.price}</span>
-              <span className={styles.stock}>Qty: {product.stock}</span>
-            </div>
-            <div className={styles.summary}>{product.summary}</div>
-            <Link to={`/product/${product._id}`} className={styles.detailsBtn}>
-              View Details →
+              <div className={styles.rowContent}>
+                <div className={styles.cardHeader}>
+                  <span className={styles.productName}>{product.name}</span>
+                  {product.stock > 0 ? (
+                    <span className={styles.stockBadge}>In Stock</span>
+                  ) : (
+                    <span className={styles.stockBadgeOut}>Out of Stock</span>
+                  )}
+                </div>
+                <div className={styles.info}>
+                  <span className={styles.brand}>{product.brand}</span>
+                  <span className={styles.category}>{product.category}</span>
+                  <span className={styles.price}>R{product.price}</span>
+                  <span className={styles.stock}>Qty: {product.stock}</span>
+                </div>
+                <div className={styles.summary}>{product.summary}</div>
+                <span className={styles.detailsBtn}>
+                  View Details
+                </span>
+              </div>
             </Link>
           </li>
         ))}
