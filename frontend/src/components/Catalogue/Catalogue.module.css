@@ -20,13 +20,13 @@
   margin-bottom: 2rem;
   padding: 0.5rem;
 
-  max-width: 900px;   /* same as .list */
-  margin-left: auto;  /* center horizontally */
-  margin-right: auto; /* center horizontally */
+  max-width: 900px;  
+  margin-left: auto; 
+  margin-right: auto; 
 }
 
 .filters .search {
-  grid-column: 1 / -1; /* sits on its own row */
+  grid-column: 1 / -1;
   width: 100%;
 }
 
