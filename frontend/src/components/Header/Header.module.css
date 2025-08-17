@@ -1,5 +1,5 @@
 .header {
-  background: linear-gradient(90deg, #1A2A80 60%, #2d6cdf 100%);
+  background: #1A2A80;
   height: 70px;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
 }
 
 .navbar a.active {
-  background: #fdd835;
+  background: #fff;
   color: #1A2A80;
   box-shadow: 0 2px 8px rgba(253, 216, 53, 0.15);
 }
