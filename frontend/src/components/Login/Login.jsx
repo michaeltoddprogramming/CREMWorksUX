@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import styles from './Login.module.css';
 
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,11 +19,25 @@ function Login() {
       });
       const data = await res.json();
       if (res.ok) {
+        console.log(data.admin);
+        if(data.admin === true)
+        {
+          localStorage.setItem("isAdmin", "true");
+        }
+        else
+        {
+          localStorage.setItem("isAdmin", "false");
+        }
+        localStorage.setItem("loggedIn", "true");
+        if (window.updateHeader) window.updateHeader();
+        navigate("/catalogue");
         setMsg(data.message);
       } else {
+        localStorage.setItem("loggedIn", "false");
         setMsg(data.message);
       }
     } catch {
+      localStorage.setItem("loggedIn", "false");
       setMsg('Network error');
     }
   };
@@ -39,7 +54,8 @@ function Login() {
               value={username}
               onChange={e => setUsername(e.target.value)}
               required
-            />
+              className={styles.loginInput}
+              />
           </label>
         </div>
         <div>
@@ -50,6 +66,7 @@ function Login() {
               value={password}
               onChange={e => setPassword(e.target.value)}
               required
+              className={styles.loginInput}
             />
           </label>
         </div>
@@ -57,7 +74,7 @@ function Login() {
         <p>
           Don't have an account? <Link to="/register">Register</Link>
         </p>
-        {msg && <p>{msg}</p>}
+        {msg && <p style={{color: 'red'}}>{msg}</p>}
       </form>
     </div>
   );

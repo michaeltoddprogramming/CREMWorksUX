@@ -1,0 +1,75 @@
+.editContainer {
+    background-image: url('../../assets/images/diagonal-waves.png');
+    background-color: #074799;
+    /* min-height: calc(100vh - 90px); */
+    padding: 2.5rem 2rem 2rem;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+:root {
+    --filter-h: 44px;
+}
+
+.editForm 
+{
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 2em;
+    padding-bottom: 0;
+    border-radius: 8px;
+}
+
+label.labelText 
+{
+    color: black;
+}
+
+.editForm label input, .editForm label textarea, .editForm label select
+{
+    /* background-color: pink; */
+    max-width: 100%;
+    box-sizing: border-box;
+
+  width: 100%;
+  padding: 0.5em;
+  margin-top: 0.25em;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+
+}
+
+.category 
+{
+	background: #e3f2fd;
+	/* color: #074799; */
+	/* font-weight: 600; */
+	font-size: 1.05rem;
+	padding: 0.2rem 0.7rem;
+	border-radius: 1rem;
+}
+
+.editForm input, .editForm textarea, .editForm label select{
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1.5px solid #9cd2f7;
+  border-radius: 0.5rem;
+  background: #f9fcff;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 50, 0.05);
+}
+
+form input:focus, form select:focus, form textarea:focus  {
+  border-color: #074799;
+  outline: none;
+  background-color: #eef8ff;
+}
+
+.submitButton:hover
+{
+    background-color: #9cd2f7;
+}
+

@@ -1,0 +1,195 @@
+.catalogueContainer {
+	background-image: url('../../assets/images/diagonal-waves.png');
+	background-color: #074799;
+	min-height: calc(100vh - 90px);
+	padding: 2.5rem 2rem 2rem;
+	font-family: 'Montserrat', Arial, sans-serif;
+}
+
+:root {
+	--filter-h: 44px;
+}
+
+.filters {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	grid-auto-rows: var(--filter-h);
+	gap: 1rem;
+	align-items: center;
+	justify-items: stretch;
+	margin-bottom: 2rem;
+	padding: 0.5rem;
+
+	max-width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.filters .search {
+	grid-column: 1 / -1;
+	width: 100%;
+}
+
+.filters * {
+	box-sizing: border-box;
+}
+
+.filters .search,
+.filters .category,
+.filters .filterPrice,
+.filters .sort {
+	height: var(--filter-h);
+	padding: 0 1.2rem;
+	border-radius: 2rem;
+	border: 2px solid #074799;
+	font-size: 1rem;
+	font-weight: 700;
+	background: #fff;
+	transition: all 0.25s ease;
+	white-space: nowrap;
+}
+
+.filters .search:focus,
+.filters .category:focus,
+.filters .filterPrice:focus,
+.filters .sort:focus {
+	border-color: #2d6cdf;
+	box-shadow: 0 0 10px rgba(45, 108, 223, 0.3);
+	outline: none;
+}
+
+
+.noResults {
+	text-align: center;
+	color: #fff;
+	font-size: 5rem;
+	margin-top: 2rem;
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.category {
+	background: #e3f2fd;
+	color: #074799;
+	font-weight: 600;
+	font-size: 1.05rem;
+	padding: 0.2rem 0.7rem;
+	border-radius: 1rem;
+}
+
+.sort {
+	background: #e3f2fd;
+	color: #074799;
+	font-weight: 600;
+	font-size: 1.05rem;
+	padding: 0.2rem 0.7rem;
+	border-radius: 1rem;
+}
+
+.price {
+	background: #ffe4e4;
+	color: #c62828;
+	font-weight: 700;
+	font-size: 1rem;
+	padding: 0.3rem 0.7rem;
+	border-radius: 1rem;
+}
+
+.stock {
+	background: #e4f8e4;
+	color: #2e7d32;
+	font-weight: 700;
+	font-size: 1rem;
+	padding: 0.3rem 0.7rem;
+	border-radius: 1rem;
+}
+
+/* Table stuff */
+
+.productTable {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.productTable th 
+{
+  background: #074799;
+  color: #fff;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.productTable tr {
+	border-radius: 8px;
+	padding: 12px 15px;
+}
+
+
+tr:nth-child(even) 
+{
+  background: #f2f5ff; 
+}
+
+td
+{
+	padding: 12px 15px;
+}
+
+
+tr:hover 
+{
+	background: #a6c8ff;
+	color: black;
+	cursor: pointer;
+	transition: background 0.3s ease;
+}
+
+.adminImg {
+  width: 150px;
+  height: 150px;
+  border-radius: 8px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 8px; 
+}
+
+.actionButtons button {
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.deleteButton
+{
+	background-color: #ac0000;
+}
+
+.deleteButton:hover
+{
+	background-color: #610000;
+}
+
+.addButton 
+{
+	display: grid;
+	justify-self: end;
+	margin-bottom: 20px;
+	/* background-color: #074799; */
+
+}
+

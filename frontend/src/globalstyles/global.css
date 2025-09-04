@@ -75,8 +75,16 @@ label {
   margin-bottom: 1em;
 }
 
-input[type="text"],
+/* input[type="text"],
 input[type="password"] {
+  width: 100%;
+  padding: 0.5em;
+  margin-top: 0.25em;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  box-sizing: border-box;
+} */
+.loginInput{
   width: 100%;
   padding: 0.5em;
   margin-top: 0.25em;

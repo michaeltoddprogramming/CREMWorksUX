@@ -65,7 +65,7 @@ async function generateUserId()
 // ==============================
 
 app.post('/api/register', async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, isAdmin } = req.body;
 
     try 
     {
@@ -81,7 +81,8 @@ app.post('/api/register', async (req, res) => {
         const newUser = {
             id: await generateUserId(),
             username,
-            password: password
+            password: password,
+            admin: isAdmin
         };
 
         await db.collection("users").insertOne(newUser);
@@ -122,7 +123,7 @@ app.post('/api/login', async (req, res) => {
 
         // const hashedPassword = await bcrypt.hash(password, 10);
 
-        res.status(200).json({status: "success", message: "Login successful" });
+        res.status(200).json({status: "success", message: "Login successful", admin: user.admin });
     }
     catch (err) 
     {

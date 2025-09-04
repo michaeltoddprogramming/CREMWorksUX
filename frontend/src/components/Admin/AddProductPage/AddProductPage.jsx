@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import styles from './EditPage.module.css';
+import styles from './AddProductPage.module.css';
 import { Link } from 'react-router-dom';
 
 function getUnique(arr, key) 
@@ -9,26 +9,14 @@ function getUnique(arr, key)
 }
 
 
-
-
-function EditPage() {
-    const { id } = useParams();
+function AddProductPage() {
+    // const { id } = useParams();
     const [product, setProduct] = useState({});
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState("");
     const [category, setCategory] = useState('All');
     
     const categories = ['Rods', 'Reels', 'Lines', 'Lures', 'Tackle'];
-
-    useEffect(() => {
-        fetch(`/api/products/${id}`)
-            .then(res => res.json())
-            .then(data => {
-                setProduct(data);
-                setPreview(data.image);
-            })
-            .catch(() => setProduct({}));
-    }, [id]);
 
     const handleFileChange = (e) => {
         const selected = e.target.files[0];
@@ -92,7 +80,7 @@ function EditPage() {
     return (
         <div className={styles.editContainer}>
 
-            <h1>Edit Product</h1>
+            <h1>Add New Product</h1>
 
             <form onSubmit={handleSubmit} className={styles.editForm}>
                 <label className={styles.labelText}>
@@ -158,10 +146,10 @@ function EditPage() {
                     {/* <input type="text-area" value={product.summery || ''} onChange={e => setProduct({...product, summery: e.target.value})} /> */}
                 </label>
 
-                <input type="submit" value="Update Product" className={styles.submitButton}/>
+                <input type="submit" value="Add Product" className={styles.submitButton}/>
             </form>
         </div>
     );
 }
 
-export default EditPage;
+export default AddProductPage;

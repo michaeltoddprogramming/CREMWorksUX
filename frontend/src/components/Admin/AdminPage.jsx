@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import styles from './Catalogue.module.css';
+import styles from './AdminPortal.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 function getUnique(arr, key) {
@@ -132,9 +132,11 @@ function AdminPage() {
                 </select>
             </div>
 
+            <button className={styles.addButton} onClick={() => navigate('/admin/addProductPage')}>Add New Product</button>
+
 
             {filtered.length === 0 && (<li className={styles.noResults}>No products found.</li>)}
-            <table>
+            <table className={styles.productTable}>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -148,27 +150,28 @@ function AdminPage() {
                         <th>Summery</th>
                         <th>Description</th>
                         <th>Link</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {filtered.map((product) => (
-                        <tr key={product._id}>
-                            <td>{product._id}</td>
-                            <td>
+                        <tr key={product._id} >
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product._id}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>
                                 {/* <img src={product.image} alt={product.name} className={styles.productImage} /> */}
-                                <img src={product.image} alt={product.name} width="50" />
+                                <img src={product.image} alt={product.name} className={styles.adminImg}/>
                             </td>
-                            <td>{product.name}</td>
-                            <td>{product.brand}</td>
-                            <td>R{product.price}</td>
-                            <td>{product.category}</td>
-                            <td>{product.stock}</td>
-                            <td>{product.AvailabilityDate}</td>
-                            <td>{product.summary}</td>
-                            <td>{product.description}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.name}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.brand}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>R{product.price}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.category}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.stock}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.AvailabilityDate}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.summary}</td>
+                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.description}</td>
                             <td><a href={product.link} target="_blank">Link</a></td>
-                            <td>
-                                <button onClick={() => handleEdit(product._id)}>Edit</button> &nbsp; | &nbsp; <button onClick={() => handleDelete(product._id)}>Delete</button>
+                            <td className={styles.actionButtons}>
+                                <button onClick={() => handleEdit(product._id)} className={styles.adminButton}>Edit</button> <button onClick={() => handleDelete(product._id)} className={styles.deleteButton}>Delete</button>
                             </td>
                         </tr>
 

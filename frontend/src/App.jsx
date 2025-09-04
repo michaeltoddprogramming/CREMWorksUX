@@ -7,7 +7,8 @@ import Register from './components/Register/Register.jsx';
 import Catalogue from './components/Catalogue/Catalogue.jsx';
 import ProductPage from './components/ProductPage/ProductPage.jsx';
 import AdminPage from './components/Admin/AdminPage.jsx';
-import EditPage from './components/Admin//EditPage/EditPage.jsx';
+import EditPage from './components/Admin/EditPage/EditPage.jsx';
+import AddProductPage from './components/Admin/AddProductPage/AddProductPage.jsx';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/product/:id" element={<ProductPage/>}/>
         <Route path="/admin" element={<AdminPage/>}/>
         <Route path="/admin/editPage/:id" element={<EditPage/>}/>
+        <Route path="/admin/addProductPage" element={<AddProductPage/>}/>
       </Routes>
     </BrowserRouter>
   );
