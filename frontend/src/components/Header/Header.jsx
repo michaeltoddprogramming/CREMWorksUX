@@ -30,6 +30,12 @@ function Header() {
         >
           Login
         </NavLink>
+        <NavLink 
+          to="/admin" 
+          className={({ isActive }) => isActive ? styles.active : undefined}
+        >
+          Admin Portal
+        </NavLink>
       </nav>
     </header>
   );

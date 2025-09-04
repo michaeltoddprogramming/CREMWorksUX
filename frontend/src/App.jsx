@@ -6,6 +6,8 @@ import Login from './components/Login/Login.jsx';
 import Register from './components/Register/Register.jsx';
 import Catalogue from './components/Catalogue/Catalogue.jsx';
 import ProductPage from './components/ProductPage/ProductPage.jsx';
+import AdminPage from './components/Admin/AdminPage.jsx';
+import EditPage from './components/Admin//EditPage/EditPage.jsx';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/catalogue" element={<Catalogue />} />
         <Route path="/product/:id" element={<ProductPage/>}/>
+        <Route path="/admin" element={<AdminPage/>}/>
+        <Route path="/admin/editPage/:id" element={<EditPage/>}/>
       </Routes>
     </BrowserRouter>
   );
