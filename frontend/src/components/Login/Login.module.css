@@ -116,3 +116,20 @@ form a:hover {
   border-radius: var(--border-radius);
   box-sizing: border-box;
 }
+
+.loginLabel
+{
+  font-size: 1.2rem;
+  color: #fff;
+}
+
+.form
+{
+  padding: 30px;
+}
+
+.loginTitle
+{
+  margin-top: 0;
+}
+

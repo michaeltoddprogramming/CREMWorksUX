@@ -45,9 +45,9 @@ function Login() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <h2>Login</h2>
+        <h2 className={styles.loginTitle}>Login</h2>
         <div>
-          <label>
+          <label className={styles.loginLabel}>
             Username
             <input
               type="text"
@@ -59,7 +59,7 @@ function Login() {
           </label>
         </div>
         <div>
-          <label>
+          <label className={styles.loginLabel}>
             Password
             <input
               type="password"

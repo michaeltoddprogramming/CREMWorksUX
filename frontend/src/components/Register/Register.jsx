@@ -45,9 +45,9 @@ function Register() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <h2>Register</h2>
+        <h2 className={styles.registerTitle}>Register</h2>
         <div>
-          <label>
+          <label className={styles.registerLabel}>
             Username
             <input
               type="text"
@@ -59,7 +59,7 @@ function Register() {
           </label>
         </div>
         <div>
-          <label>
+          <label className={styles.registerLabel}>
             Password
             <input
               type="password"
@@ -71,9 +71,9 @@ function Register() {
           </label>
         </div>
         <div>
-          <label>
+          <label className={`${styles.registerLabel} ${styles.adminLabel}`}>
             Admin user
-            <input type="checkbox" checked={isAdmin} onChange={e => setAdmin(e.target.checked)} className={styles.loginInput}></input>
+            <input type="checkbox" checked={isAdmin} onChange={e => setAdmin(e.target.checked)} className={styles.adminCheck}></input>
             {/* <input type="checkbox" id="yes" name="yes" value="yes"></input> */}
             {/* <input
               type="password"

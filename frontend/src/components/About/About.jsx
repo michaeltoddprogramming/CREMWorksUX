@@ -17,8 +17,8 @@ function AboutUs() {
                       <p className={styles.titleFront}>Cobus Botha</p>
                   </div>
                   <div className={styles.backOne}>
-                      <p className={styles.titleBack}>About</p>
-                      <p className={styles.about}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      <p className={styles.titleBack}>Biggest fish caught</p>
+                      <p className={styles.about}>7kg rainbow trout</p>
                   </div>
               </div>
           </div>
@@ -29,8 +29,8 @@ function AboutUs() {
                       <p className={styles.titleFront}>Michael Todd</p>
                   </div>
                   <div className={styles.backTwo}>
-                      <p className={styles.titleBack}>About</p>
-                      <p className={styles.about}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      <p className={styles.titleBack}>Biggest fish caught</p>
+                      <p className={styles.about}>9kg catfish</p>
                   </div>
               </div>
           </div>
@@ -41,8 +41,8 @@ function AboutUs() {
                       <p className={styles.titleFront}>Euan Botha</p>
                   </div>
                   <div className={styles.backThree}>
-                      <p className={styles.titleBack}>About</p>
-                      <p className={styles.about}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      <p className={styles.titleBack}>Biggest fish caught</p>
+                      <p className={styles.about}>5kg perch</p>
                   </div>
               </div>
           </div>
@@ -53,8 +53,8 @@ function AboutUs() {
                       <p className={styles.titleFront}>Ruan le Roux</p>
                   </div>
                   <div className={styles.backFour}>
-                      <p className={styles.titleBack}>About</p>
-                      <p className={styles.about}>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      <p className={styles.titleBack}>Biggest fish caught</p>
+                      <p className={styles.about}>10kg Carp</p>
                   </div>
               </div>
           </div>
