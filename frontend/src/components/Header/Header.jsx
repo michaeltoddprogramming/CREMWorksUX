@@ -1,6 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import styles from './Header.module.css';
 import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
 
@@ -92,6 +94,13 @@ const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true
             Log out
           </NavLink>
         )}
+        
+          {/* <NavLink 
+            to="/cart" 
+            className={({ isActive }) => isActive ? styles.active : undefined}
+          >
+            <FontAwesomeIcon icon={faCartShopping} />
+          </NavLink> */}
       </nav>
     </header>
   );
