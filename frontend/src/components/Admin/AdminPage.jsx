@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import styles from './AdminPortal.module.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 
 function getUnique(arr, key) {
     return [...new Set(arr.map(item => item[key]))];
@@ -17,6 +21,13 @@ function AdminPage() {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [inStock, setInStock] = useState(false);
+       const [selectedBrands, setSelectedBrands] = useState([]);
+    const [rating, setRating] = useState(null);
+    const [isCollapsedP, setCollapsedP] = useState(true);
+    const [isCollapsedD, setCollapsedD] = useState(true);
+    const [isCollapsedB, setCollapsedB] = useState(true);
+    const [isCollapsedR, setCollapsedR] = useState(true);
+
 
     useEffect(() => {
         fetch('/api/products')
@@ -25,7 +36,26 @@ function AdminPage() {
             .catch(() => setProducts([]));
     }, []);
 
+
+
     const categories = ['All', ...getUnique(products, 'category')];
+        const brands = [...getUnique(products, 'brand')];
+
+        const toggleBrand = (brand) => {
+    setSelectedBrands(prev =>
+        prev.includes(brand)
+        ? prev.filter(b => b !== brand)
+        : [...prev, brand]
+    );
+    };
+
+    const toggleRating = (value) => {
+  if (rating === value) {
+    setRating(null); // uncheck if clicked again
+  } else {
+    setRating(value);
+  }
+};
 
     const filtered = products
         .filter(p =>
@@ -35,10 +65,12 @@ function AdminPage() {
                 p.brand.toLowerCase().includes(search.toLowerCase())) &&
             (minPrice === '' || Number(p.price) >= Number(minPrice)) &&
             (maxPrice === '' || Number(p.price) <= Number(maxPrice)) &&
-            (!inStock || p.stock > 0)
+            (!inStock || p.stock > 0) && (!selectedBrands.length || selectedBrands.includes(p.brand)) &&
+            (rating === null || p.rating >= rating)
         )
         .sort((a, b) => {
-            if (sort === 'price') return a.price - b.price;
+            if (sort === 'priceL') return a.price - b.price;
+            if (sort === 'priceH') return b.price - a.price;
             if (sort === 'stock') return b.stock - a.stock;
             return a.name.localeCompare(b.name);
         });
@@ -81,13 +113,18 @@ function AdminPage() {
     return (
         <div className={styles.catalogueContainer}>
             <div className={styles.filters}>
-                <input
-                    className={styles.search}
-                    type="text"
-                    placeholder="Search by name or brand..."
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                />
+                <div className={styles.searchContainer}>
+                    <div className={styles.searchWrapper}>
+                        <input
+                            className={styles.search}
+                            type="text"
+                            placeholder="Search by name or brand..."
+                            value={search}
+                            onChange={e => setSearch(e.target.value)}
+                        />
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon} />
+                    </div>
+                </div>
                 <select
                     className={styles.category}
                     value={category}
@@ -97,7 +134,7 @@ function AdminPage() {
                         <option key={cat} value={cat}>{cat}</option>
                     ))}
                 </select>
-                <input
+                {/* <input
                     className={styles.filterPrice}
                     type="number"
                     min="0"
@@ -112,7 +149,7 @@ function AdminPage() {
                     placeholder="Max Price"
                     value={maxPrice}
                     onChange={e => setMaxPrice(e.target.value)}
-                />
+                /> */}
                 {/*<label className={styles.stockLabel}>
           <input
             type="checkbox"
@@ -122,17 +159,72 @@ function AdminPage() {
           In Stock Only
         </label>*/}
                 <select
-                    className={styles.sort}
+                    className={styles.category}
                     value={sort}
                     onChange={e => setSort(e.target.value)}
                 >
-                    <option value="name">Sort by Name</option>
-                    <option value="price">Sort by Price</option>
-                    <option value="stock">Sort by Stock</option>
+                    <option value="name">Name: Alphabetically</option>
+                    <option value="priceL">Price: low to high</option>
+                    <option value="priceH">Price: high to low</option>
+                    <option value="stock">Stock: Qty</option>
                 </select>
+                <section >
+                    <select  className={styles.sort}  value={rating || ''} onChange={e => toggleRating(e.target.value)}>
+                        {/* <label> */}
+                            <option  value="">Rating</option>
+                            <option  value="1">1 Star</option>
+                        {/* </label> */}
+                        {/* <label> */}
+                            <option  value="2">2 Star</option>
+                        {/* </label> */}
+                        {/* <label> */}
+                            <option  value="3">3 Star</option>
+                        {/* </label> */}
+                        {/* <label> */}
+                            <option  value="4">4 Star</option>
+                        {/* </label> */}
+                        {/* <label> */}
+                            <option  value="5">5 Star</option>
+                        {/* </label> */}
+
+                    </select>
+                </section>
+
+                {/* <section> */}
+                    {/* <label className={styles.priceRange}> */}
+                        <select className={styles.sort} value={minPrice} onChange={e => setMinPrice(e.target.value)}>
+                            <option value="">Min Price</option>
+                            <option value="0">R0</option>
+                            <option value="100">R100</option>
+                            <option value="200">R200</option>
+                            <option value="500">R500</option>
+                            <option value="800">R800</option>
+                            <option value="1000">R1000</option>
+                            <option value="1500">R1500</option>
+                            <option value="2000">R2000</option>
+                            <option value="5000">R5000</option>
+                        </select>
+
+                        
+                    {/* </label> */}
+                {/* </section> */}
+                <select className={styles.sort} value={maxPrice} onChange={e => setMaxPrice(e.target.value)}>
+                            <option value="">Max Price</option>
+                            <option value="0">R0</option>
+                            <option value="100">R100</option>
+                            <option value="200">R200</option>
+                            <option value="500">R500</option>
+                            <option value="800">R800</option>
+                            <option value="1000">R1000</option>
+                            <option value="1500">R1500</option>
+                            <option value="2000">R2000</option>
+                            <option value="5000">R5000</option>
+                        </select>
+                <button className={styles.addButton} onClick={() => navigate('/admin/addProductPage')}>Add New Product</button>
+
             </div>
 
-            <button className={styles.addButton} onClick={() => navigate('/admin/addProductPage')}>Add New Product</button>
+            {/* <button className={styles.addButton} onClick={() => navigate('/admin/addProductPage')}>Add New Product</button> */}
 
 
             {filtered.length === 0 && (<li className={styles.noResults}>No products found.</li>)}

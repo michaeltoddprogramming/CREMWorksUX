@@ -11,7 +11,7 @@ h1 {
 
 .background {
     font-size: 1.2rem;
-    color: #fff;
+    color: black;
     text-align: center;
     justify-self: center;
     align-self: center;
@@ -31,7 +31,7 @@ h1 {
 
 .top {
     grid-row: 1;
-    background-color: #074799;
+    background-color: #bed2ec;
     height: 100%;
 
     clip-path: polygon(
@@ -60,6 +60,11 @@ h1 {
         0% 95%,
         0% 0%
   );
+}
+
+.top h1
+{
+  color: black;
 }
 
 .team {
@@ -174,7 +179,7 @@ h1 {
     #81c784 45px,
     #81c784 60px
   ), url(../../assets/images/45-degree-fabric-light.png); */
-  background-color: #074799;
+  background-color: #113F67;
   color: #fff;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
   padding: 1rem;
@@ -195,7 +200,7 @@ h1 {
     #81c784 45px,
     #81c784 60px
   ), url(../../assets/images/45-degree-fabric-light.png); */
-  background-color: #074799;
+  background-color: #113F67;
   color: #fff;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
   padding: 1rem;

@@ -1,6 +1,6 @@
 .productPage {
-  background-image: url('../../assets/images/diagonal-waves.png');
-  background-color: #074799;
+  /* background-image: url('../../assets/images/diagonal-waves.png'); */
+  background-color: #bed2ec;
   min-height: calc(100vh - 90px);
 }
 

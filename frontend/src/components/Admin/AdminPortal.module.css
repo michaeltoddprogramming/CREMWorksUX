@@ -1,6 +1,6 @@
 .catalogueContainer {
 	/* background-image: url('../../assets/images/diagonal-waves.png'); */
-	background-color: #074799;
+	background-color: #bed2ec;
 	min-height: calc(100vh - 90px);
 	padding: 2.5rem 2rem 2rem;
 	font-family: 'Montserrat', Arial, sans-serif;
@@ -14,27 +14,35 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 	grid-auto-rows: var(--filter-h);
-	gap: 1rem;
+	gap: 1rem 3rem;
 	align-items: center;
 	justify-items: stretch;
 	margin-bottom: 2rem;
 	padding: 0.5rem;
 
-	max-width: 900px;
+	/* max-width: 900px; */
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.filters .search {
+/* .filters .search {
 	grid-column: 1 / -1;
 	width: 100%;
+} */
+
+.searchContainer
+{
+  display: grid;
+  /* grid-template-columns: ; */
+  grid-column: 1 / -1;
+  margin-bottom: 20px;
 }
 
 .filters * {
 	box-sizing: border-box;
 }
 
-.filters .search,
+.search,
 .filters .category,
 .filters .filterPrice,
 .filters .sort {
@@ -47,9 +55,17 @@
 	background: #fff;
 	transition: all 0.25s ease;
 	white-space: nowrap;
+	width: 100%;
 }
 
-.filters .search:focus,
+.filters .category,
+.filters .filterPrice,
+.filters .sort
+{
+	width: 120%;
+}
+
+.search:focus,
 .filters .category:focus,
 .filters .filterPrice:focus,
 .filters .sort:focus {
@@ -58,10 +74,34 @@
 	outline: none;
 }
 
+.searchWrapper
+{
+  position: relative;
+  width: 100%;
+}
+.searchIcon {
+  position: absolute;
+  left: 10px; /* adjust distance from left */
+  top: 48%;
+  transform: translateY(-50%);
+  color: #074799;
+  pointer-events: none; /* allows typing in input */
+}
+
+.search {
+  grid-column: 1 / 2;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 40px;
+
+  /* text-align: center; */
+  justify-self: center;
+}
+
 
 .noResults {
 	text-align: center;
-	color: #fff;
+	color: black;
 	font-size: 5rem;
 	margin-top: 2rem;
 }
@@ -141,7 +181,7 @@
 
 tr:nth-child(even) 
 {
-  background: #f2f5ff; 
+  background: #e5ebff; 
 }
 
 td
@@ -186,10 +226,26 @@ tr:hover
 
 .addButton 
 {
-	display: grid;
+	/* display: grid; */
+	grid-column: -2 / -1;
 	justify-self: end;
 	margin-bottom: 20px;
-	/* background-color: #074799; */
+	background-color: #FCF8DD;
+	color: black;
 
 }
+
+
+.priceRange
+{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* grid-gap: 5px; */
+}
+
+ 
+
+
+
+
 

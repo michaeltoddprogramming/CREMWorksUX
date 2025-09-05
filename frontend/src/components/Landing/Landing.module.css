@@ -16,7 +16,7 @@
     justify-content: center;
 
     padding: 2rem;
-    background-color: #074799;
+    background-color: #bed2ec;
     height: 100%;
 
     clip-path: polygon(
@@ -63,12 +63,13 @@
 
 .title span:nth-child(1) {
   color: transparent;
-  -webkit-text-stroke: 0.3px rgb(128, 198, 255);
+  /* -webkit-text-stroke: 0.3px rgb(128, 198, 255); */
+  -webkit-text-stroke: 0.3px #113F67;
 }
 
 .title span:nth-child(2) {
-  color: rgb(128, 198, 255);
-  -webkit-text-stroke: 1px rgb(128, 198, 255);
+  color: #113F67;
+  -webkit-text-stroke: 1px #113F67;
   animation: uiverse723 3s ease-in-out infinite;
 }
 
@@ -116,7 +117,7 @@
 }
 
 .btn {
-  --color: #074799;
+  --color: #113F67;
   position: relative;
   display: flex;
   justify-content: center;
