@@ -1,0 +1,11 @@
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px; /* adjust as needed */
+}
+
+.spinner {
+  width: 64px; /* adjust size of your GIF */
+  height: 64px;
+}

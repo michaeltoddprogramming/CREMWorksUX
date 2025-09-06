@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import Loading from '../Loading/Loading';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import BrandDropdown from './BrandDropDown';
+
 
 function getUnique(arr, key) {
     return [...new Set(arr.map(item => item[key]))];
@@ -19,15 +23,34 @@ function AdminPage() {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [inStock, setInStock] = useState(false);
-    const [selectedBrands, setSelectedBrands] = useState([]);
+    // const [selectedBrands, setSelectedBrands] = useState([]);
     const [rating, setRating] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [brandFilter, setBrandFilter] = useState(''); 
+    const [selectedBrand, setSelectedBrand] = useState(''); 
+    // const [searchBrand, setSearchBrand] = useState('');
 
     useEffect(() => {
+        setLoading(true);
         fetch('/api/products')
             .then(res => res.json())
-            .then(setProducts)
-            .catch(() => setProducts([]));
+            .then(data => {
+                setProducts(data);
+                setLoading(false);
+            })
+            .catch(() => {setProducts([]); setLoading(false)});
     }, []);
+
+    const clearFilters = () => {
+    setSearch('');
+    setCategory('All');
+    setSort('name');
+    setMinPrice('');
+    setMaxPrice('');
+    setInStock(false);
+    setRating(null);
+    setSelectedBrand('');
+};
 
     const categories = ['All', ...getUnique(products, 'category')];
     const brands = [...getUnique(products, 'brand')];
@@ -57,8 +80,8 @@ function AdminPage() {
             (minPrice === '' || Number(p.price) >= Number(minPrice)) &&
             (maxPrice === '' || Number(p.price) <= Number(maxPrice)) &&
             (!inStock || p.stock > 0) && 
-            (!selectedBrands.length || selectedBrands.includes(p.brand)) &&
-            (rating === null || p.rating >= rating)
+            (!selectedBrand || p.brand === selectedBrand) &&
+            (rating === null || p.averageRating >= rating)
         )
         .sort((a, b) => {
             if (sort === 'priceL') return a.price - b.price;
@@ -132,16 +155,16 @@ function AdminPage() {
                     <option value="stock">Stock: Qty</option>
                 </select>
 
-                <select className={styles.sort} value={rating || ''} onChange={e => toggleRating(e.target.value)}>
+                <select className={`${styles.sort} ${styles.hover}`} value={rating || ''} onChange={e => toggleRating(e.target.value)}>
                     <option value="">Rating</option>
-                    <option value="1">1 Star</option>
-                    <option value="2">2 Star</option>
-                    <option value="3">3 Star</option>
-                    <option value="4">4 Star</option>
-                    <option value="5">5 Star</option>
+                    <option value="1">1 ★ and up</option>
+                    <option value="2">2 ★ and up</option>
+                    <option value="3">3 ★ and up</option>
+                    <option value="4">4 ★ and up</option>
+                    <option value="5">5 ★ and up</option>
                 </select>
 
-                <select className={styles.sort} value={minPrice} onChange={e => setMinPrice(e.target.value)}>
+                <select className={`${styles.sort} ${styles.hover}`} value={minPrice} onChange={e => setMinPrice(e.target.value)}>
                     <option value="">Min Price</option>
                     <option value="0">R0</option>
                     <option value="100">R100</option>
@@ -154,7 +177,7 @@ function AdminPage() {
                     <option value="5000">R5000</option>
                 </select>
 
-                <select className={styles.sort} value={maxPrice} onChange={e => setMaxPrice(e.target.value)}>
+                <select className={`${styles.sort} ${styles.hover}`} value={maxPrice} onChange={e => setMaxPrice(e.target.value)}>
                     <option value="">Max Price</option>
                     <option value="0">R0</option>
                     <option value="100">R100</option>
@@ -167,14 +190,29 @@ function AdminPage() {
                     <option value="5000">R5000</option>
                 </select>
 
+                {/* <select>
+                        {brands.map((brand, index) => (
+                                <option key={index} type="checkbox" value={brand} checked={selectedBrands.includes(brand)} onChange={() => toggleBrand(brand)}>
+                                {brand}</option>
+                        ))}
+                </select> */}
+                <div >
+                    <BrandDropdown
+                    brands={brands}
+                    selectedBrand={selectedBrand}
+                    setSelectedBrand={setSelectedBrand}
+                    // className={styles.please}
+                    />
+
+                </div>
+
+                <button onClick={clearFilters} className={styles.clearButton}>Clear Filters</button>
+
                 <button className={styles.addButton} onClick={() => navigate('/admin/addProductPage')}>
                     Add New Product
                 </button>
             </div>
 
-            {filtered.length === 0 && (
-                <div className={styles.noResults}>No products found.</div>
-            )}
 
             <table className={styles.productTable}>
                 <thead>
@@ -185,37 +223,54 @@ function AdminPage() {
                         <th>Brand</th>
                         <th>Price</th>
                         <th>Category</th>
+                        <th>Availability Date</th>
                         <th>Stock</th>
                         <th>Summary</th>
                         <th>Description</th>
+                        <th>Link</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {filtered.map((product) => (
-                        <tr key={product._id}>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>{product._id}</td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>
-                                <img src={product.image} alt={product.name} className={styles.adminImg}/>
-                            </td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.name}</td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.brand || 'N/A'}</td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>R{product.price}</td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.category}</td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.stock}</td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.summary || 'N/A'}</td>
-                            <td onClick={() => navigate(`/product/${product._id}`)}>{product.description}</td>
-                            <td className={styles.actionButtons}>
-                                <button onClick={() => handleEdit(product._id)} className={styles.adminButton}>
-                                    Edit
-                                </button>
-                                <button onClick={() => handleDelete(product._id)} className={styles.deleteButton}>
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
+                
+                    <tbody>
+                        {loading ? (
+                            <tr>
+                                <td colSpan="10" style={{ textAlign: 'center' }}>
+                                    <Loading />
+                                </td>
+                            </tr>
+                            ) : filtered.length === 0  ? 
+                            (
+                                <div className={styles.noResults}>No products found.</div>
+                            ) : (
+                            filtered.map((product) => (
+                                // <tr key={product._id} onClick={() => navigate(`/product/${product._id}`)}>
+                                <tr key={product._id} >
+                                    <td >{product._id}</td>
+                                    <td >
+                                        <img src={product.image} alt={product.name} className={styles.adminImg}/>
+                                    </td>
+                                    <td >{product.name}</td>
+                                    <td >{product.brand || 'N/A'}</td>
+                                    <td >R{product.price}</td>
+                                    <td >{product.category}</td>
+                                    <td >{product.AvailabilityDate}</td>
+                                    <td >{product.stock}</td>
+                                    <td >{product.summary || 'N/A'}</td>
+                                    <td >{product.description}</td>
+                                    <td><a href={`/product/${product._id}`} target="_blank">View</a></td>
+                                    <td className={styles.actionButtons}>
+                                        <button onClick={() => handleEdit(product._id)} className={styles.adminButton}>
+                                            Edit
+                                        </button>
+                                        <button onClick={() => handleDelete(product._id)} className={styles.deleteButton}>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))                        
+                        )}
+                    </tbody>
             </table>
         </div>
     );
