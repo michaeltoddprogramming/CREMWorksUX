@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styles from './ProductPage.module.css';
+import Reviews from '../Reviews/Reviews';
 
 function ProductPage() {
   const { id } = useParams();
@@ -43,6 +44,7 @@ function ProductPage() {
             <div className={styles.description}>{product.description}</div>
           </div>
         </div>
+        <Reviews productId={id} />
       </div>
     </div>
   );

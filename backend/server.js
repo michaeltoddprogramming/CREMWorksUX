@@ -153,7 +153,7 @@ app.get('/api/products/:id', async (req, res) => {
     }
 });
 
-// Add product endpoint for admin
+// Update your existing POST /api/products endpoint
 app.post('/api/products', async (req, res) => {
     try {
         const { name, price, description, image, category, stock } = req.body;
@@ -167,9 +167,12 @@ app.post('/api/products', async (req, res) => {
             name,
             price: parseFloat(price),
             description,
-            image: image || '/images/product1.jpg', // Default image
+            image: image || '/images/product1.jpg',
             category: category || 'general',
             stock: parseInt(stock) || 0,
+            reviews: [],
+            averageRating: 0, 
+            reviewCount: 0, 
             createdAt: new Date()
         };
 
@@ -271,6 +274,105 @@ app.post('/api/checkout', async (req, res) => {
         });
     } catch (err) {
         res.status(500).json({ status: "failed", message: "Error processing checkout", error: err.message });
+    }
+});
+
+// Add review endpoint
+app.post('/api/products/:id/reviews', async (req, res) => {
+    try {
+        if (!ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ error: "Invalid product ID" });
+        }
+
+        const { username, rating, comment } = req.body;
+        
+        if (!username || !rating || !comment) {
+            return res.status(400).json({ 
+                status: "failed", 
+                message: "Username, rating, and comment are required" 
+            });
+        }
+
+        if (rating < 1 || rating > 5) {
+            return res.status(400).json({ 
+                status: "failed", 
+                message: "Rating must be between 1 and 5" 
+            });
+        }
+
+        const newReview = {
+            id: new Date().getTime(), // Simple review ID
+            username,
+            rating: parseInt(rating),
+            comment,
+            createdAt: new Date()
+        };
+
+        // Add review to product's reviews array
+        const result = await db.collection("products").updateOne(
+            { _id: new ObjectId(req.params.id) },
+            { 
+                $push: { reviews: newReview },
+                $inc: { reviewCount: 1 }
+            }
+        );
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+
+        // Update average rating
+        const product = await db.collection("products").findOne({ _id: new ObjectId(req.params.id) });
+        if (product && product.reviews) {
+            const totalRating = product.reviews.reduce((sum, review) => sum + review.rating, 0);
+            const averageRating = totalRating / product.reviews.length;
+            
+            await db.collection("products").updateOne(
+                { _id: new ObjectId(req.params.id) },
+                { $set: { averageRating: parseFloat(averageRating.toFixed(1)) } }
+            );
+        }
+
+        res.status(201).json({ 
+            status: "success", 
+            message: "Review added successfully", 
+            review: newReview 
+        });
+    } catch (err) {
+        res.status(500).json({ 
+            status: "failed", 
+            message: "Error adding review", 
+            error: err.message 
+        });
+    }
+});
+
+// Get reviews for a product
+app.get('/api/products/:id/reviews', async (req, res) => {
+    try {
+        if (!ObjectId.isValid(req.params.id)) {
+            return res.status(400).json({ error: "Invalid product ID" });
+        }
+
+        const product = await db.collection("products").findOne(
+            { _id: new ObjectId(req.params.id) },
+            { projection: { reviews: 1, averageRating: 1, reviewCount: 1 } }
+        );
+
+        if (!product) {
+            return res.status(404).json({ error: "Product not found" });
+        }
+
+        res.json({
+            reviews: product.reviews || [],
+            averageRating: product.averageRating || 0,
+            reviewCount: product.reviewCount || 0
+        });
+    } catch (err) {
+        res.status(500).json({ 
+            error: "Error fetching reviews", 
+            details: err.message 
+        });
     }
 });
 
