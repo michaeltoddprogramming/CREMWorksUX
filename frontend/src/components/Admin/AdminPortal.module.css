@@ -68,7 +68,9 @@
 .search:focus,
 .filters .category:focus,
 .filters .filterPrice:focus,
-.filters .sort:focus {
+.filters .sort:focus,
+.dropdownSearch,
+.dropdownToggle {
 	border-color: #2d6cdf;
 	box-shadow: 0 0 10px rgba(45, 108, 223, 0.3);
 	outline: none;
@@ -194,7 +196,7 @@ tr:hover
 {
 	background: #a6c8ff;
 	color: black;
-	cursor: pointer;
+	/* cursor: pointer; */
 	transition: background 0.3s ease;
 }
 
@@ -232,7 +234,15 @@ tr:hover
 	margin-bottom: 20px;
 	background-color: #FCF8DD;
 	color: black;
+}
 
+.clearButton
+{
+	/* display: grid; */
+	justify-self: end;
+	margin-bottom: 20px;
+	background-color: #FCF8DD;
+	color: black;
 }
 
 
@@ -242,6 +252,185 @@ tr:hover
   grid-template-columns: 1fr 1fr;
   /* grid-gap: 5px; */
 }
+
+label
+{
+  padding: 8px 0px 8px 0px;
+    display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+
+/* .catalogueContainer label:not(.priceRangeLabel):not(.categoryLabel):hover
+{
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+} */
+
+.hover:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+}
+
+.category:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+
+}
+
+
+select:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+}
+
+.hover:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+}
+
+.top:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  padding: 0px 10px 0px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+option
+{
+	background-color: #f8f9fa;  
+}
+
+
+/* container around the dropdown */
+.brandDropdown {
+	position: relative;
+	/* height: 100%;  */
+	/* height: var(--filter-h); */
+	/* border-radius: 2rem; */
+	/* border: 2px solid #074799; */
+	/* font-size: 1rem; */
+	/* font-weight: 700; */
+	/* background: #fff; */
+	/* transition: all 0.25s ease; */
+	/* white-space: nowrap; */
+	/* width: 100%; */
+}
+
+.dropdownToggle, .dropdownSearch {
+	text-align: left;
+	  flex: 1;
+  height: 100%; 
+	margin:0;
+  width: 100%;
+  height: 40px;
+  padding: 0 1.2rem;
+  font-size: 0.9rem;
+
+    background-color: #f8f9fa;
+  border: 2px solid #074799;
+  color: #074799;
+
+	/* background-color: #f8f9fa; */
+	/* color: black; */
+}
+
+.dropdownSearch::placeholder
+{
+	 color: #074799;
+
+}
+
+.dropdownToggle:hover
+{
+	background-color: rgb(223, 226, 228);
+
+}
+/* 
+.dropdownList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 20;
+} */
+
+/* .brandDropdown
+{
+  display: flex;           
+  align-items: center;     
+  padding-bottom: 10px;
+  height: 40px;
+} */
+
+
+.dropdownToggle,
+.dropdownSearch {
+  padding: 0 0.5rem;
+  border-radius: 2rem;
+  background-color: #f8f9fa;
+  border: 2px solid #074799;
+  color: #074799;
+  font-size: 1rem;
+	font-weight: 700;
+}
+
+/* dropdown list */
+.dropdownList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background: #f8f9fa;
+  border: 1px solid #ccc;
+  z-index: 20;
+  border-radius: 8px;
+  text-decoration: none;
+  list-style: none;
+  padding: 10px;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+/* .dropdownList:hover
+{
+	background-color: pink;
+} */
+
+.dropdownList li {
+  /* background: #e3f2fd;      same as .category/.sort */
+  color: #074799;
+  font-weight: 600;
+  font-size: 1.05rem;
+  /* padding: 0.2rem 0.7rem; */
+  /* border-radius: 1rem; */
+  /* margin: 4px; */
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  list-style: none;
+  text-decoration: none;
+}
+.dropdownList li:hover {
+  background-color: rgb(223, 226, 228);
+  /* color: #074799; */
+}
+
+
+
+
 
  
 

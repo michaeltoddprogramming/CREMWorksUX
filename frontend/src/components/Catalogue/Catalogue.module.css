@@ -47,10 +47,24 @@
 /* .filters .search, */
 .search,
 .filters .category,
-.filters .filterPrice,
 .filters .sort {
   /* height: var(--filter-h); */
   padding: 0 1.2rem;
+  border-radius: 2rem;
+  border: 2px solid #074799;
+  font-size: 1rem;
+  font-weight: 700;
+  background: #fff;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+
+  width: 100%;
+  height: 44px;
+}
+.filters .minPrice
+{
+  /* height: var(--filter-h); */
+  /* padding: 0 1.2rem; */
   border-radius: 2rem;
   border: 2px solid #074799;
   font-size: 1rem;
@@ -141,7 +155,8 @@
 .listItem:hover .rowLink,
 .rowLink:hover {
   transform: scale(1.02);
-  box-shadow: 0 8px 24px rgba(7, 71, 153, 0.18);
+  /* box-shadow: 0 8px 24px rgba(7, 71, 153, 0.18); */
+  /* box-shadow: 0 8px 24px rgba(7, 71, 153, 0.18); */
 }
 
 .rowLink:focus-visible {
@@ -221,13 +236,16 @@
 .sort {
   /* background: #e3f2fd; */
   color: #074799;
+    border: 2px solid #074799;
   font-weight: 600;
   font-size: 1.05rem;
-  /* padding: 0.2rem 0.7rem; */
+  padding: 0.2rem 0.7rem;
   /* padding: 5px; */
   border-radius: 1rem;
-  /* width: 100px;
-  height: 44px; */
+  width: 100%;
+  justify-self: center;
+  /* text-align: center; */
+  /* height: 44px; */
 }
 
 .price {
@@ -364,9 +382,21 @@
 {
   /* background-color: #f8f9fa; */
   display: grid;
+  /* grid-template-columns: 1fr auto; */
+  width: 100%;
+  /* justify-self: start; */
+}
+
+.top
+{
+  /* background-color: #f8f9fa; */
+  display: grid;
   grid-template-columns: 1fr auto;
   width: 100%;
   /* justify-self: start; */
+    padding: 0px 10px 0px 10px;
+  border-radius: 8px;
+
 }
 
 /* .filterIcon */
@@ -374,15 +404,24 @@
 
 .sortParent
 {
+  display: grid;
+  grid-template-rows: auto auto;
   border-radius: 8px;
   background-color: #f8f9fa;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
   padding: 20px;
-  /* display: grid; */
+  display: grid;
   /* grid-template-columns: 1fr 0.5fr; */
   /* justify-self: start; */
+}
+
+.sortTop
+{
+  display: grid;
+  grid-template-columns: auto auto;
+
 }
 
 
@@ -400,6 +439,10 @@
 div p
 {
   cursor: pointer;
+}
+.filterParent>p:hover, .filterIcon:hover
+{
+  background-color: rgb(223, 226, 228);
 }
 
 .filterParent p
@@ -426,3 +469,160 @@ div p
 {
   width: 267px;
 }
+
+label
+{
+  /* height: 30px; */
+  padding: 8px 0px 8px 0px;
+    display: flex;
+  align-items: center;
+  border-radius: 8px;
+  /* transition: background-color 0.2s, color 0.2s; */
+}
+
+.catalogueContainer label:not(.priceRangeLabel):not(.categoryLabel):hover {
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+}
+
+.category:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  /* color: pink; */
+  cursor: pointer;
+
+}
+
+/* select.hover1:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+} */
+
+select:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+}
+
+.hover:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  cursor: pointer;
+}
+
+.top:hover
+{
+  transition: background-color 0.2s, color 0.2s;
+  background-color: rgb(223, 226, 228);
+  padding: 0px 10px 0px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+option
+{
+  background-color: #f8f9fa;  
+}
+
+.brandFilter
+{
+  max-height: 350px;  /* or whatever height fits your layout */
+  overflow-y: auto;
+  padding-right: 5px; /* optional, avoids scrollbar overlapping content */
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* space between checkboxes */
+}
+
+
+.brandSearch {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid #074799;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.brandSearch::placeholder
+{
+  color: #074799;
+}
+.brandSearch:focus {
+  outline: none;
+  border-color: #2d6cdf;
+  box-shadow: 0 0 5px rgba(45, 108, 223, 0.3);
+}
+
+.brandSearchContainer {
+  position: relative;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.brandSearch {
+  width: 100%;
+  padding: 8px 30px 8px 10px; /* space for the button */
+  border-radius: 8px;
+  border: 2px solid #074799;
+  font-size: 1rem;
+}
+
+.brandsClear {
+  margin: 0px;
+  position: absolute;
+  right: 8px;
+  top: 42%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: #074799;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.brandsClear:hover {
+  /* color: #fff; */
+  /* transform: scale(1.5px); */
+  background-color: transparent;
+  /* border-radius: 50%; */
+}
+
+.brandsClear:hover {
+  /* color: #2d6cdf; just change color */
+  /* transform: translateY(-50%) scale(1.2);  */
+  transform: translateY(-50%) scale(1.2); 
+}
+
+.clearAllBtn 
+{
+  justify-self: end;
+  align-self: center;
+  margin-top: 0px;
+  background: #2d6cdf;
+  color: white;
+  border: none;
+  /* padding: 0.5rem 1rem; */
+  padding: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s, background 0.2s;
+  width: 150px;
+  height: 30px;
+}
+
+.clearAllBtn:hover {
+  background: #074799;
+  transform: scale(1.05);
+}
+
+

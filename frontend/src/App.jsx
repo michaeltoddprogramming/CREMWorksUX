@@ -7,7 +7,7 @@ import Register from './components/Register/Register.jsx';
 import Catalogue from './components/Catalogue/Catalogue.jsx';
 import ProductPage from './components/ProductPage/ProductPage.jsx';
 import AdminPage from './components/Admin/AdminPage.jsx';
-import EditPage from './components/Admin/EditPage/EditPage.jsx';
+import EditPage from './components/Edit/EditPage.jsx';
 import AddProductPage from './components/Admin/AddProductPage/AddProductPage.jsx';
 import CartPage from './components/Cart/Cart.jsx';
 

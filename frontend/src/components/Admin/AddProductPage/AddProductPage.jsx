@@ -97,6 +97,8 @@ function AddProductPage() {
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(product)
             });
+
+            console.log(JSON.stringify(product));
             
             const data = await res.json();
             
@@ -127,6 +129,7 @@ function AddProductPage() {
                         accept="image/*" 
                         onChange={handleFileChange}
                         disabled={isUploading}
+                        required
                     />
                     {isUploading && <div style={{color: '#007bff', marginTop: '5px'}}>Uploading...</div>}
                 </label>
@@ -185,7 +188,8 @@ function AddProductPage() {
                     <input 
                         type="text" 
                         value={product.brand} 
-                        onChange={e => setProduct({...product, brand: e.target.value})} 
+                        onChange={e => setProduct({...product, brand: e.target.value})}
+                        required 
                     />
                 </label>
 
@@ -208,6 +212,7 @@ function AddProductPage() {
                         className={styles.category} 
                         value={product.category} 
                         onChange={e => setProduct({...product, category: e.target.value})}
+                        required
                     >
                         {categories.map(cat => (
                             <option key={cat} value={cat}>{cat}</option>
@@ -222,6 +227,7 @@ function AddProductPage() {
                         type="number" 
                         value={product.stock} 
                         onChange={e => setProduct({...product, stock: e.target.value})} 
+                        required
                     />
                 </label>
 
@@ -231,7 +237,8 @@ function AddProductPage() {
                     <input 
                         type="date" 
                         value={product.availabilityDate} 
-                        onChange={e => setProduct({...product, availabilityDate: e.target.value})} 
+                        onChange={e => setProduct({...product, availabilityDate: e.target.value})}
+                        required 
                     />
                 </label>
 
@@ -242,6 +249,7 @@ function AddProductPage() {
                         type="text" 
                         value={product.summary} 
                         onChange={e => setProduct({...product, summary: e.target.value})} 
+                        required
                     />
                 </label>
 

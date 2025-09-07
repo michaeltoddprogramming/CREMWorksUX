@@ -156,19 +156,23 @@ app.get('/api/products/:id', async (req, res) => {
     }
 });
 
-// Update your existing POST /api/products endpoint
+// Add product POST /api/products endpoint
 app.post('/api/products', async (req, res) => {
     try {
         const { name, price, description, image, category, stock, brand, summary, availabilityDate } = req.body;
         
-        if (!name || !price || !description) {
-            return res.status(400).json({ status: "failed", message: "Name, price, and description are required" });
+        if (!name || !price || !description ||!brand) {
+            return res.status(400).json({ status: "failed", message: "Name, price, brand and description are required" });
         }
 
         const newProduct = {
             id: await generateProductId(),
             name,
+            brand,
+            category: category || 'general',
             price: parseFloat(price),
+            stock: parseInt(stock) || 0,
+            summary,
             description,
             image: image || '/images/product1.jpg',
             category: category || 'general',
@@ -199,7 +203,11 @@ app.put('/api/products/:id', async (req, res) => {
         
         const updateData = {};
         if (name) updateData.name = name;
+        if (brand) updateData.brand = (brand);
+        if (category) updateData.category = category;
         if (price) updateData.price = parseFloat(price);
+        if (stock !== undefined) updateData.stock = parseInt(stock);
+        if (summary) updateData.summary = summary;
         if (description) updateData.description = description;
         if (image) updateData.image = image;
         if (category) updateData.category = category;
