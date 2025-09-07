@@ -3,6 +3,7 @@ import PFP from '../../assets/images/PFP.jpeg';
 import ruan from '../../assets/images/ruan.jpg';
 import cobus from '../../assets/images/cobus.jpg';
 import michael from '../../assets/images/michael.jpg';
+import euan from '../../assets/images/euan.jpg';
 
 function AboutUs() {
   return (
@@ -40,7 +41,7 @@ function AboutUs() {
           <div className={styles.cardThree}>
               <div className={styles.innerThree}>
                   <div className={styles.frontThree}>
-                      <img src={PFP} className={styles.avatar} />
+                      <img src={euan} className={styles.avatar} />
                       <p className={styles.titleFront}>Euan Botha</p>
                   </div>
                   <div className={styles.backThree}>

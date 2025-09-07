@@ -30,6 +30,7 @@ function Login() {
         }
         localStorage.setItem("loggedIn", "true");
         localStorage.setItem("username", `${data.username}`);
+        localStorage.setItem("userId", `${data.userId}`);
         if (window.updateHeader) window.updateHeader();
         navigate("/catalogue");
         setMsg(data.message);

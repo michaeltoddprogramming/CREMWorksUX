@@ -8,6 +8,7 @@ function Header() {
 
 const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("loggedIn") === "true");
 const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true"); 
+// const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true"); 
 
   window.updateHeader = () => {
     setIsLoggedIn(localStorage.getItem("loggedIn") === "true");
@@ -82,6 +83,15 @@ const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true
             className={({ isActive }) => isActive ? styles.active : undefined}
           >
             Admin Portal
+          </NavLink>
+        )}
+
+        {isLoggedIn && (
+          <NavLink 
+            to="/cart" 
+            className={({ isActive }) => isActive ? styles.active : undefined}
+          >
+            <FontAwesomeIcon icon={faCartShopping}/>
           </NavLink>
         )}
 

@@ -471,7 +471,8 @@
   box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 } */
 
-.homeBanner {
+/* .homeBanner {
+  margin: 0;
   width: 100vw; 
   margin-left: calc(-50vw + 50%); 
   height: 400px;
@@ -481,8 +482,30 @@
   justify-content: center;
   border-radius: 1rem;
   box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+} */
+
+
+.homeBanner {
+  position: relative;           /* allows us to use left/right tricks */
+  left: 50%;                    /* start from center */
+  right: 50%;
+  margin-left: -50vw;           /* shift back half of viewport width */
+  margin-right: -50vw;
+  width: 100vw;                 /* full viewport width */
+  height: 400px;
+  background: linear-gradient(135deg, #bed2ec, #074799);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;             /* remove rounded corners if needed */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
 
 
 .leftContent {

@@ -124,7 +124,7 @@ app.post('/api/login', async (req, res) => {
             return res.status(401).json({status: "failed", message: "Password incorrect" });
         }
 
-        res.status(200).json({status: "success", message: "Login successful", admin: user.admin, username: username });
+        res.status(200).json({status: "success", message: "Login successful", admin: user.admin, username: username, userId: user.id });
     }
     catch (err) 
     {
@@ -438,6 +438,121 @@ app.post('/api/upload', async (req, res) => {
         });
     }
 });
+
+// Add item to user's cart
+app.post('/api/cart', async (req, res) => {
+    const { userId, productId, quantity } = req.body;
+
+    if (!userId || !productId || !quantity) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    try {
+        // Make sure the user exists
+        const user = await db.collection("users").findOne({ id: userId });
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        // Update cart: if product already in cart, increment quantity
+        const updateResult = await db.collection("users").updateOne(
+            { id: userId, "cart.productId": productId },
+            { $inc: { "cart.$.quantity": quantity } }
+        );
+
+        // If product wasn't already in cart, add it
+        if (updateResult.matchedCount === 0) {
+            await db.collection("users").updateOne(
+                { id: userId },
+                { $push: { cart: { productId, quantity } } }
+            );
+        }
+
+        res.json({ message: "Product added to cart" });
+    } catch (err) {
+        res.status(500).json({ message: "Error adding to cart", error: err.message });
+    }
+});
+
+// Get all products in a user's cart
+app.get('/api/cart/:userId', async (req, res) => {
+    const userId = parseInt(req.params.userId, 10);
+
+    if (!userId) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    try {
+        // Find user and their cart
+        const user = await db.collection("users").findOne(
+            { id: userId },
+            { projection: { cart: 1 } }
+        );
+
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        const cartItems = user.cart || [];
+
+        if (cartItems.length === 0) return res.json([]);
+
+        // Convert cart productIds to ObjectId
+        const productObjectIds = cartItems.map(item => new ObjectId(item.productId));
+
+        // Fetch product details
+        const products = await db.collection("products").find({ _id: { $in: productObjectIds } }).toArray();
+
+        // Merge quantity from cart
+        const detailedCart = cartItems.map(item => {
+            const product = products.find(p => p._id.toString() === item.productId);
+            return product ? { ...product, quantity: item.quantity } : null;
+        }).filter(Boolean); // remove nulls if product not found
+
+        res.json(detailedCart);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching cart", error: err.message });
+    }
+});
+
+// DELETE /api/cart/:userId/:productId
+app.delete('/api/cart/:userId/:productId', async (req, res) => {
+  const { userId, productId } = req.params;
+
+  try {
+    const result = await db.collection("users").updateOne(
+      { id: parseInt(userId) },
+      { $pull: { cart: { productId } } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: "Product not found in cart" });
+    }
+
+    res.json({ message: "Product removed from cart" });
+  } catch (err) {
+    res.status(500).json({ message: "Error removing product from cart", error: err.message });
+  }
+});
+
+// PATCH /api/cart/:userId/:productId
+app.patch('/api/cart/:userId/:productId', async (req, res) => {
+  const { userId, productId } = req.params;
+  const { quantity } = req.body;
+
+  try {
+    const result = await db.collection("users").updateOne(
+      { id: parseInt(userId), "cart.productId": productId },
+      { $set: { "cart.$.quantity": quantity } }
+    );
+
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ message: "Product not found in cart or no changes made" });
+    }
+
+    res.json({ message: "Cart updated successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Error updating cart", error: err.message });
+  }
+});
+
+
 
 app.use((req, res) => {
     res.status(404).send('Not Found');

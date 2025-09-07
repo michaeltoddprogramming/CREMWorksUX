@@ -5,6 +5,7 @@ import Reviews from '../Reviews/Reviews';
 import Loading from '../Loading/Loading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import CartInsert from '../Cart/Cart Separate/CartInsert'
 
 function ProductPage() {
   const { id } = useParams();
@@ -12,6 +13,13 @@ function ProductPage() {
   const [product, setProduct] = useState(null);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const userId = getId();
+  const [showNotification, setShowNotification] = useState(false);
+
+function getId()
+{
+  return localStorage.getItem("userId");
+}
 
   useEffect(() => {
     fetch(`/api/products/${id}`)
@@ -29,6 +37,34 @@ function ProductPage() {
     .then(data => setProducts(data))
     .catch(err => console.error(err));
 }, []);
+
+const addToCart = async () => {
+  try {
+    const response = await fetch('/api/cart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: parseInt(userId),
+        productId: product._id, 
+        quantity: 1 // you can make this dynamic if you want
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // alert('Product added to cart!');
+      setShowNotification(true);
+      console.log('Cart updated:', data);
+    } else {
+      alert(`Failed to add product: ${data.message}`);
+      console.error('Error:', data);
+    }
+  } catch (err) {
+    alert('Network error while adding to cart');
+    console.error(err);
+  }
+};
 
 function getRandomItems(array, n) {
   const copy = [...array];
@@ -49,6 +85,10 @@ function getRandomItems(array, n) {
 
   return (
     <div className={styles.productPage}>
+      <CartInsert 
+          show={showNotification} 
+        onClose={() => setShowNotification(false)} 
+      />
       <div className={styles.container}>
         <button className={styles.backBtn} onClick={() => navigate(-1)}>
           Go Back
@@ -74,7 +114,8 @@ function getRandomItems(array, n) {
             <h2 className={styles.stock}>
               {product.stock > 0 ? `Stock: ${product.stock}` : 'Out of stock'}
             </h2>
-            <button className={styles.addToCart} disabled>Add to cart (coming soon)</button>
+            <button className={styles.addToCart} onClick={() => addToCart()}>Add to cart</button>
+            <button className={styles.goToCart} onClick={() => navigate('/cart')}>Go to cart</button>
           </div>
 
           <div className={styles.descriptionParent}> 

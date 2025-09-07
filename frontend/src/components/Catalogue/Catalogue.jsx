@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import styles from './Catalogue.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import Loading from '../Loading/Loading';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import CartInsert from '../Cart/Cart Separate/CartInsert'
 
 function getUnique(arr, key) {
     return [...new Set(arr.map(item => item[key]))];
@@ -14,6 +16,7 @@ function getUnique(arr, key) {
 
 function Catalogue() {
     const [products, setProducts] = useState([]);
+      const navigate = useNavigate();
     const [search, setSearch] = useState('');
     const [sort, setSort] = useState('name');
     const [category, setCategory] = useState('All');
@@ -28,6 +31,8 @@ function Catalogue() {
     const [isCollapsedR, setCollapsedR] = useState(true);
     const [loading, setLoading] = useState(true);
     const [brandSearch, setBrandSearch] = useState('');
+    const userId = localStorage.getItem('userId');
+      const [showNotification, setShowNotification] = useState(false);
 
     useEffect(() => {
         setLoading(true);
@@ -57,10 +62,31 @@ function Catalogue() {
     );
     };
 
+    
+
     const clearBrands = () => {
         setSelectedBrands([]);
         setBrandSearch(''); // also clear the search
     };
+
+    const addToCart = async (productId) => {
+        try {
+            await fetch('/api/cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    userId: parseInt(userId),
+                    productId,
+                    quantity: 1
+                })
+            });
+            setShowNotification(true);
+            // alert('Product added to cart!');
+        } catch (err) {
+            console.error(err);
+            alert('Failed to add product to cart.');
+        }
+    }
 
     const clearAllFilters = () => {
         setSearch('');
@@ -102,6 +128,10 @@ function Catalogue() {
 
     return (
         <div className={styles.catalogueContainer}>
+            <CartInsert 
+          show={showNotification} 
+        onClose={() => setShowNotification(false)} 
+      />
             <div className={styles.searchContainer}>
                 <div className={styles.searchWrapper}>
                     <input
@@ -328,8 +358,10 @@ function Catalogue() {
                     )}
                     {filtered.map(product => (
                         <li key={product._id} className={styles.listItem}>
-                            <Link to={`/product/${product._id}`} className={styles.rowLink}>
-                                <div className={styles.imageWrapper}>
+                            <div className={styles.rowLink}>
+
+                            {/* <Link to={`/product/${product._id}`} className={styles.rowLink}> */}
+                                <div className={styles.imageWrapper} onClick={() => navigate(`/product/${product._id}`)}>
                                     {product.image && (
                                         <img
                                             src={product.image}
@@ -338,8 +370,8 @@ function Catalogue() {
                                         />
                                     )}
                                 </div>
-                                <div className={styles.rowContent}>
-                                    <div>
+                                <div className={styles.rowContent} >
+                                    <div onClick={() => navigate(`/product/${product._id}`)}>
                                         <div className={styles.cardHeader}>
                                             <span className={styles.productName}>{product.name}</span>
                                         </div>
@@ -362,12 +394,20 @@ function Catalogue() {
 
                                     <aside className={styles.paymentDetails}>
                                         <span className={styles.price}>R{product.price}</span>
-                                        <span className={styles.detailsBtn}>
+                                        <span className={styles.detailsBtn} onClick={() => navigate(`/product/${product._id}`)}>
                                             View Details
+                                        </span>
+                                        <span className={styles.detailsBtn}
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // prevents the row's click from triggering
+                                            addToCart(product._id);
+                                        }} >
+                                            Add to <FontAwesomeIcon icon={faCartShopping}/>
                                         </span>
                                     </aside>
                                 </div>
-                            </Link>
+                            </div>
+                            {/* </Link> */}
                         </li>
                     ))}
                 </ul>

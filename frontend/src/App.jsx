@@ -11,6 +11,7 @@ import EditPage from './components/Edit/EditPage.jsx';
 import AddProductPage from './components/Admin/AddProductPage/AddProductPage.jsx';
 import CartPage from './components/Cart/Cart.jsx';
 import HomePage from './components/Home/HomePage.jsx';
+import AfterBuy from './components/Cart/AfterBuy/AfterBuy.jsx';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/admin/editPage/:id" element={<EditPage/>}/>
         <Route path="/admin/addProductPage" element={<AddProductPage/>}/>
         <Route path="/cart" element={<CartPage/>}/>
+        <Route path="/cart/afterBuy" element={<AfterBuy/>}/>
       </Routes>
     </BrowserRouter>
   );
