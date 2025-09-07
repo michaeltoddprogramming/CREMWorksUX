@@ -254,7 +254,7 @@ function AdminPage() {
                                     <td >{product.brand || 'N/A'}</td>
                                     <td >R{product.price}</td>
                                     <td >{product.category}</td>
-                                    <td >{product.AvailabilityDate}</td>
+                                    <td >{product.availabilityDate}</td>
                                     <td >{product.stock}</td>
                                     <td >{product.summary || 'N/A'}</td>
                                     <td >{product.description}</td>

@@ -68,7 +68,7 @@ function AddProductPage() {
 
                     if (response.ok) {
                         setProduct(prev => ({ ...prev, image: data.imageUrl }));
-                        alert('Image uploaded successfully!');
+                        // alert('Image uploaded successfully!');
                     } else {
                         alert('Error uploading image: ' + data.message);
                     }
