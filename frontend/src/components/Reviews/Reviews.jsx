@@ -12,6 +12,21 @@ function Reviews({ productId }) {
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [showReviewForm, setShowReviewForm] = useState(false);
+    const isLoggedIn = getLoggedIn();
+    const username = getUsername();
+    const [message, setMessage] = useState(''); // Add this state
+
+
+
+    function getLoggedIn()
+    {
+        return localStorage.getItem("loggedIn") === 'true';
+    }
+
+    function getUsername()
+    {
+        return localStorage.getItem("username");
+    }
 
     useEffect(() => {
         fetchReviews();
@@ -30,11 +45,12 @@ function Reviews({ productId }) {
         } catch (error) {
             console.error('Error fetching reviews:', error);
         }
-    };
+    };    
 
     const handleSubmitReview = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setMessage('');
 
         try {
             const response = await fetch(`/api/products/${productId}/reviews`, {
@@ -43,7 +59,7 @@ function Reviews({ productId }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: newReview.username,
+                    username: username,
                     rating: newReview.rating,
                     comment: newReview.comment
                 })
@@ -52,16 +68,19 @@ function Reviews({ productId }) {
             const data = await response.json();
 
             if (response.ok) {
-                alert('Review added successfully!');
+                // alert('Review added successfully!');
+                setMessage('Review added successfully!');
                 setNewReview({ rating: 5, comment: '', username: '' });
                 setShowReviewForm(false);
                 fetchReviews();
             } else {
-                alert(data.message || 'Error adding review');
+                // alert(data.message || 'Error adding review');
+                setMessage(data.message || 'Error adding review');
             }
         } catch (error) {
             console.error('Error submitting review:', error);
-            alert('Network error. Please try again.');
+            setMessage('Network error. Please try again.');
+            // alert('Network error. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
@@ -97,7 +116,7 @@ function Reviews({ productId }) {
             </div>
 
             <div className={styles.addReviewSection}>
-                {!showReviewForm ? (
+                {isLoggedIn && (!showReviewForm  ? (
                     <button 
                         onClick={() => setShowReviewForm(true)}
                         className={styles.addReviewBtn}
@@ -108,7 +127,7 @@ function Reviews({ productId }) {
                     <form onSubmit={handleSubmitReview} className={styles.reviewForm}>
                         <h4>Write Your Review</h4>
                         
-                        <div className={styles.usernameInput}>
+                        {/* <div className={styles.usernameInput}>
                             <label>Your Name:</label>
                             <input
                                 type="text"
@@ -117,7 +136,7 @@ function Reviews({ productId }) {
                                 placeholder="Enter your name..."
                                 required
                             />
-                        </div>
+                        </div> */}
 
                         <div className={styles.ratingInput}>
                             <label>Rating:</label>
@@ -145,6 +164,8 @@ function Reviews({ productId }) {
                             />
                         </div>
 
+                        <p></p>
+
                         <div className={styles.formButtons}>
                             <button 
                                 type="submit" 
@@ -162,7 +183,7 @@ function Reviews({ productId }) {
                             </button>
                         </div>
                     </form>
-                )}
+                ))}
             </div>
 
             <div className={styles.reviewsList}>

@@ -29,6 +29,7 @@ function Login() {
           localStorage.setItem("isAdmin", "false");
         }
         localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("username", `${data.username}`);
         if (window.updateHeader) window.updateHeader();
         navigate("/catalogue");
         setMsg(data.message);
@@ -70,7 +71,7 @@ function Login() {
             />
           </label>
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className={styles.button}>Login</button>
         <p>
           Don't have an account? <Link to="/register">Register</Link>
         </p>

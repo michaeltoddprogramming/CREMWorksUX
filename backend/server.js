@@ -124,7 +124,7 @@ app.post('/api/login', async (req, res) => {
             return res.status(401).json({status: "failed", message: "Password incorrect" });
         }
 
-        res.status(200).json({status: "success", message: "Login successful", admin: user.admin });
+        res.status(200).json({status: "success", message: "Login successful", admin: user.admin, username: username });
     }
     catch (err) 
     {
