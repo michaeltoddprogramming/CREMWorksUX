@@ -17,6 +17,12 @@ function EditPage() {
         fetch(`/api/products/${id}`)
             .then(res => res.json())
             .then(data => {
+                // Format the date properly for HTML date input
+                if (data.availabilityDate) {
+                    const date = new Date(data.availabilityDate);
+                    data.availabilityDate = date.toISOString().split('T')[0];
+                }
+                
                 setProduct(data);
                 setPreview(data.image);
             })
@@ -126,7 +132,7 @@ function EditPage() {
                 </label>
 
                 <label className={styles.labelText}>
-                    Availability:
+                    Stock:
                     <br/>
                     <input 
                         type="number" 

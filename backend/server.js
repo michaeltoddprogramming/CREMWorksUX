@@ -3,12 +3,15 @@ const bcrypt = require('bcryptjs');
 const { MongoClient, ObjectId } = require('mongodb');
 const dotenv = require('dotenv');
 const path = require('path');
+const fs = require('fs');
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(express.json());
 
 const client = new MongoClient(process.env.MONGO_URI);
@@ -372,6 +375,54 @@ app.get('/api/products/:id/reviews', async (req, res) => {
         res.status(500).json({ 
             error: "Error fetching reviews", 
             details: err.message 
+        });
+    }
+});
+
+// Add this endpoint for image upload
+app.post('/api/upload', async (req, res) => {
+    try {
+        const { imageData, fileName } = req.body;
+        
+        if (!imageData || !fileName) {
+            return res.status(400).json({ 
+                status: 'error', 
+                message: 'Image data and filename are required' 
+            });
+        }
+
+        // Remove the data URL prefix (data:image/jpeg;base64,)
+        const base64Data = imageData.replace(/^data:image\/\w+;base64,/, '');
+        
+        // Create images directory if it doesn't exist
+        const imagesDir = path.join(__dirname, '../frontend/public/images');
+        if (!fs.existsSync(imagesDir)) {
+            fs.mkdirSync(imagesDir, { recursive: true });
+        }
+
+        // Generate unique filename
+        const timestamp = Date.now();
+        const fileExtension = path.extname(fileName) || '.jpg';
+        const uniqueFileName = `product-${timestamp}${fileExtension}`;
+        const filePath = path.join(imagesDir, uniqueFileName);
+
+        // Write the file
+        fs.writeFileSync(filePath, base64Data, 'base64');
+
+        const imageUrl = `/images/${uniqueFileName}`;
+        
+        res.json({
+            status: 'success',
+            imageUrl: imageUrl,
+            message: 'Image uploaded successfully'
+        });
+
+    } catch (error) {
+        console.error('Upload error:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Error uploading image',
+            error: error.message
         });
     }
 });
