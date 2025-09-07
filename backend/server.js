@@ -159,7 +159,7 @@ app.get('/api/products/:id', async (req, res) => {
 // Add product POST /api/products endpoint
 app.post('/api/products', async (req, res) => {
     try {
-         const { name, price, brand, description, summary, image, category, stock } = req.body;
+        const { name, price, description, image, category, stock, brand, summary, availabilityDate } = req.body;
         
         if (!name || !price || !description ||!brand) {
             return res.status(400).json({ status: "failed", message: "Name, price, brand and description are required" });
@@ -175,10 +175,14 @@ app.post('/api/products', async (req, res) => {
             summary,
             description,
             image: image || '/images/product1.jpg',
+            category: category || 'general',
+            stock: parseInt(stock) || 0,
+            brand: brand || '',
+            summary: summary || '',
+            availabilityDate: availabilityDate || null,
             reviews: [],
             averageRating: 0, 
-            reviewCount: 0, 
-            createdAt: new Date()
+            reviewCount: 0
         };
 
         await db.collection("products").insertOne(newProduct);
@@ -195,7 +199,7 @@ app.put('/api/products/:id', async (req, res) => {
             return res.status(400).json({ error: "Invalid product ID" });
         }
 
-        const { name, price, brand, description, summary, image, category, stock } = req.body;
+        const { name, price, description, image, category, stock, brand, summary, availabilityDate } = req.body;
         
         const updateData = {};
         if (name) updateData.name = name;
@@ -206,7 +210,11 @@ app.put('/api/products/:id', async (req, res) => {
         if (summary) updateData.summary = summary;
         if (description) updateData.description = description;
         if (image) updateData.image = image;
-        updateData.updatedAt = new Date();
+        if (category) updateData.category = category;
+        if (stock !== undefined) updateData.stock = parseInt(stock);
+        if (brand !== undefined) updateData.brand = brand;
+        if (summary !== undefined) updateData.summary = summary;
+        if (availabilityDate !== undefined) updateData.availabilityDate = availabilityDate; 
 
         const result = await db.collection("products").updateOne(
             { _id: new ObjectId(req.params.id) },
