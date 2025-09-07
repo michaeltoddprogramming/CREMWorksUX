@@ -13,22 +13,78 @@ function AddProductPage() {
         availabilityDate: '',
         summary: '',
         description: '',
-        image: ''
+        image: '/images/product1.jpg' // Default image
     });
     const [file, setFile] = useState(null);
     const [preview, setPreview] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     
     const categories = ['Rods', 'Reels', 'Lines', 'Lures', 'Tackle'];
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const selected = e.target.files[0];
         if (!selected) return;
+
+        // Validate file type
+        if (!selected.type.startsWith('image/')) {
+            alert('Please select an image file');
+            return;
+        }
+
+        // Validate file size (5MB max)
+        if (selected.size > 5 * 1024 * 1024) {
+            alert('File size must be less than 5MB');
+            return;
+        }
+
         setFile(selected);
-        const previewUrl = URL.createObjectURL(selected);
-        setPreview(previewUrl);
-        // Set a default image path for now
-        setProduct(prev => ({ ...prev, image: `/images/${selected.name}` }));
+        setIsUploading(true);
+
+        try {
+            // Create preview
+            const previewUrl = URL.createObjectURL(selected);
+            setPreview(previewUrl);
+
+            // Convert to base64
+            const reader = new FileReader();
+            reader.onload = async (event) => {
+                try {
+                    const base64Data = event.target.result;
+                    
+                    // Upload to server
+                    const response = await fetch('/api/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            imageData: base64Data,
+                            fileName: selected.name
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        setProduct(prev => ({ ...prev, image: data.imageUrl }));
+                        alert('Image uploaded successfully!');
+                    } else {
+                        alert('Error uploading image: ' + data.message);
+                    }
+                } catch (error) {
+                    console.error('Upload error:', error);
+                    alert('Error uploading image');
+                } finally {
+                    setIsUploading(false);
+                }
+            };
+            reader.readAsDataURL(selected);
+        } catch (error) {
+            console.error('File processing error:', error);
+            alert('Error processing file');
+            setIsUploading(false);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -66,11 +122,54 @@ function AddProductPage() {
 
             <form onSubmit={handleSubmit} className={styles.editForm}>
                 <label className={styles.labelText}>
-                    Image:
+                    Upload Image:
                     <br/>
-                    <input type="file" accept="image/*" onChange={handleFileChange} required/>
+                    <input 
+                        type="file" 
+                        accept="image/*" 
+                        onChange={handleFileChange}
+                        disabled={isUploading}
+                        required
+                    />
+                    {isUploading && <div style={{color: '#007bff', marginTop: '5px'}}>Uploading...</div>}
                 </label>
-                {preview && <img src={preview} alt="Preview" width="100" />}
+                
+                {preview && (
+                    <div style={{margin: '10px 0'}}>
+                        <strong>Preview:</strong><br/>
+                        <img src={preview} alt="Preview" width="150" style={{border: '1px solid #ddd', borderRadius: '5px'}} />
+                    </div>
+                )}
+
+                <label className={styles.labelText}>
+                    Image Path:
+                    <br/>
+                    <input 
+                        type="text" 
+                        value={product.image} 
+                        onChange={e => setProduct({...product, image: e.target.value})} 
+                        placeholder="/images/product1.jpg"
+                    />
+                    <small style={{display: 'block', color: '#666', marginTop: '5px'}}>
+                        Auto-filled when you upload an image, or enter manually
+                    </small>
+                </label>
+
+                {product.image && (
+                    <div style={{margin: '10px 0'}}>
+                        <strong>Current Image:</strong><br/>
+                        <img 
+                            src={product.image} 
+                            alt="Product" 
+                            width="150" 
+                            style={{border: '1px solid #ddd', borderRadius: '5px'}}
+                            onError={(e) => {
+                                e.target.style.border = '2px solid red';
+                                e.target.alt = 'Image not found';
+                            }}
+                        />
+                    </div>
+                )}
 
                 <label className={styles.labelText}>
                     Title:
@@ -122,7 +221,7 @@ function AddProductPage() {
                 </label>
 
                 <label className={styles.labelText}>
-                    Availability:
+                    Stock Quantity:
                     <br/>
                     <input 
                         type="number" 
@@ -170,7 +269,7 @@ function AddProductPage() {
                     type="submit" 
                     value={isLoading ? "Adding..." : "Add Product"} 
                     className={styles.submitButton}
-                    disabled={isLoading}
+                    disabled={isLoading || isUploading}
                 />
             </form>
         </div>
