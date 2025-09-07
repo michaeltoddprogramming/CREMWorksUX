@@ -28,7 +28,7 @@ function AddProductPage() {
 
         // Validate file type
         if (!selected.type.startsWith('image/')) {
-            alert('Please select an image file');
+            // alert('Please select an image file');
             return;
         }
 
@@ -103,7 +103,7 @@ function AddProductPage() {
             const data = await res.json();
             
             if (res.ok) {
-                alert("Product added successfully!");
+                // alert("Product added successfully!");
                 navigate('/admin');
             } else {
                 alert(data.message || "Error adding product");

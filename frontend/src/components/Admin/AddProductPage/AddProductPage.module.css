@@ -68,3 +68,9 @@ form input:focus {
   background-color: #eef8ff;
 }
 
+.submitButton:hover
+{
+    background-color: #9cd2f7;
+    /* transform: scale(1.05); */
+}
+  

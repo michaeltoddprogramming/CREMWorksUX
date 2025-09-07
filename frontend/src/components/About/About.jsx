@@ -1,5 +1,8 @@
 import styles from './About.module.css';
 import PFP from '../../assets/images/PFP.jpeg';
+import ruan from '../../assets/images/ruan.jpg';
+import cobus from '../../assets/images/cobus.jpg';
+import michael from '../../assets/images/michael.jpg';
 
 function AboutUs() {
   return (
@@ -13,7 +16,7 @@ function AboutUs() {
           <div className={styles.cardOne}>
               <div className={styles.innerOne}>
                   <div className={styles.frontOne}>
-                      <img src={PFP} className={styles.avatar} />
+                      <img src={cobus} className={styles.avatar} />
                       <p className={styles.titleFront}>Cobus Botha</p>
                   </div>
                   <div className={styles.backOne}>
@@ -25,7 +28,7 @@ function AboutUs() {
           <div className={styles.cardTwo}>
               <div className={styles.innerTwo}>
                   <div className={styles.frontTwo}>
-                      <img src={PFP} className={styles.avatar} />
+                      <img src={michael} className={styles.avatar} />
                       <p className={styles.titleFront}>Michael Todd</p>
                   </div>
                   <div className={styles.backTwo}>
@@ -49,7 +52,7 @@ function AboutUs() {
           <div className={styles.cardFour}>
               <div className={styles.innerFour}>
                   <div className={styles.frontFour}>
-                      <img src={PFP} className={styles.avatar} />
+                      <img src={ruan} className={styles.avatar} />
                       <p className={styles.titleFront}>Ruan le Roux</p>
                   </div>
                   <div className={styles.backFour}>

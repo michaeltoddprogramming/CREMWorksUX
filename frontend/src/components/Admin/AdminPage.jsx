@@ -110,7 +110,7 @@ function AdminPage() {
                 throw new Error("Failed to delete product");
             }
 
-            alert("Product deleted successfully!");
+            // alert("Product deleted successfully!");
             setProducts(products.filter(p => p._id !== id));
         } catch (error) {
             console.error(error);

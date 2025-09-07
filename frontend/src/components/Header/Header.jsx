@@ -48,7 +48,7 @@ const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true
     <header className={styles.header}>
       <nav className={styles.navbar}>
         <NavLink 
-          to="/" 
+          to="/home" 
           className={({ isActive }) => isActive ? styles.active : undefined}
           end
         >

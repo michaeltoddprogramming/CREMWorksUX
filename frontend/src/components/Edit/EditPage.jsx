@@ -57,7 +57,7 @@ function EditPage() {
             const data = await res.json();
             
             if (res.ok) {
-                alert("Product updated successfully!");
+                // alert("Product updated successfully!");
                 navigate('/admin');
             } else {
                 alert(data.message || "Error updating product");

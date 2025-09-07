@@ -10,6 +10,7 @@ import AdminPage from './components/Admin/AdminPage.jsx';
 import EditPage from './components/Edit/EditPage.jsx';
 import AddProductPage from './components/Admin/AddProductPage/AddProductPage.jsx';
 import CartPage from './components/Cart/Cart.jsx';
+import HomePage from './components/Home/HomePage.jsx';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<HomePage/>}/>
         <Route path="/about" element={<AboutUs />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
