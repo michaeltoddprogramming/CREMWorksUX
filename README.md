@@ -1,79 +1,73 @@
-# CREM WORKS – UX PROJECT
+# Welcome to your Lovable project
 
-This project is a **monorepo** setup with
+## Project info
 
-- **Frontend**: React + Vite
-- **Backend**: Node.js
-- Managed with **npm workspaces**
+**URL**: https://lovable.dev/projects/3ff1729b-e081-47b6-ad69-64e40eb0a715
 
----
+## How can I edit this code?
 
-## PROJECT SETUP
+There are several ways of editing your application.
 
----
+**Use Lovable**
 
-### Components and Styling
+Simply visit the [Lovable Project](https://lovable.dev/projects/3ff1729b-e081-47b6-ad69-64e40eb0a715) and start prompting.
 
-- **Component Organization:**  
-  All React components are stored in `frontend/src/components`.
+Changes made via Lovable will be committed automatically to this repo.
 
-- **Global Styling:**  
-  Shared styles for layout, colors, and typography are placed in `frontend/src/globalstyles/index.css`. These styles apply to the whole app.
+**Use your preferred IDE**
 
-- **Component-Specific Styling:**  
-  Each component can have its own CSS Module file (`Login.module.css` in the Login folder). CSS Modules keep styles scoped to the component, preventing conflicts.
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
----
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-### Install dependencies
+Follow these steps:
 
-Run **ONCE from the ROOT DIRECTORY (I SET IT UP THIS WAY SO THERES NO NEED TO BE SWITCHING DIRECTORYS AND RUNNING NPM INSTALL)**:
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
 
-```bash
-npm install
-```
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
 
-This installs all frontend and backend dependencies in the shared root `node_modules`. ( There will still be node_modules folders in the frontend and backend but they are just symlinks)
+# Step 3: Install the necessary dependencies.
+npm i
 
----
-
-### Running the Stack
-
-SETUP IN A WAY WHERE YOU CAN RUN BACKEND AND FRONTEND FROM THE ROOT IN ONE CLI COMMAND
-
-```bash
+# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-This will
-- Run the backend on `http://localhost:3000`
-- Run the frontend on `http://localhost:5173`
+**Edit a file directly in GitHub**
 
----
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-## Current Scripts
+**Use GitHub Codespaces**
 
-| Script            | Description                    |
-|------------------|--------------------------------|
-| `npm run dev`     | Starts both frontend and backend |
-| `npm run dev:frontend` | Starts only the React frontend |
-| `npm run dev:backend`  | Starts only the Node backend |
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
----
+## What technologies are used for this project?
 
-## Adding Packages (Frontend / Backend Specific if need be)
+This project is built with:
 
-To install a package in a specific workspace (Frontend dependencies or Backend Dependencies)
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-```bash
-npm install <package-name> --workspace frontend
-npm install <package-name> --workspace backend
-```
+## How can I deploy this project?
 
-> Don't run `npm install` inside subfolders! ITS NOT NEEDED
+Simply open [Lovable](https://lovable.dev/projects/3ff1729b-e081-47b6-ad69-64e40eb0a715) and click on Share -> Publish.
 
----
+## Can I connect a custom domain to my Lovable project?
 
-## Git & Ignore Notes
+Yes, you can!
 
-This is a single Git repo. A shared `.gitignore` at the root handles all `node_modules`, `dist`, and system files.
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
