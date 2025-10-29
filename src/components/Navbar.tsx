@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Fish, ShoppingCart, Info, LogIn, LogOut, User, Settings } from "lucide-react";
+import { Fish, ShoppingCart, Info, LogIn, LogOut, User, Settings, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
@@ -50,7 +50,7 @@ export const Navbar = () => {
           <div className="flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
             <Link
               to="/"
-              className={`relative font-medium transition-all ${
+              className={`relative text-xl font-medium transition-all ${
                 isActive("/") ? "text-blue-600" : "text-blue-600 hover:text-blue-800"
               }`}
             >
@@ -63,7 +63,7 @@ export const Navbar = () => {
             </Link>
             <Link
               to="/gear"
-              className={`flex items-center gap-2 font-medium transition-all ${
+              className={`flex items-center gap-2 text-xl font-medium transition-all ${
                 isActive("/gear") ? "text-blue-600" : "text-blue-600 hover:text-blue-800"
               }`}
             >
@@ -76,7 +76,7 @@ export const Navbar = () => {
             </Link>
             <Link
               to="/about"
-              className={`flex items-center gap-2 font-medium transition-all ${
+              className={`flex items-center text-xl gap-2 font-medium transition-all ${
                 isActive("/about") ? "text-blue-600" : "text-blue-600 hover:text-blue-800"
               }`}
             >
@@ -96,14 +96,31 @@ export const Navbar = () => {
                   Welcome, {user?.username} {isAdmin && "(Admin)"}
                 </span>
 
-                <Link to="/cart" className="relative p-2 hover:opacity-80 transition-opacity">
-                  <ShoppingCart className="h-5 w-5 text-blue-600" />
-                  {count > 0 && (
-                    <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center text-xs bg-blue-600 text-white rounded-full">
-                      {count}
-                    </Badge>
-                  )}
+                
+                <Link
+                  to="/orders"
+                  className="flex items-center gap-2 font-medium text-blue-600 hover:text-blue-800 transition-all"
+                >
+                  <Package className="h-4 w-4 text-blue-600" />
+                  Orders
                 </Link>
+                
+                <Link
+                  to="/cart"
+                  className="flex items-center gap-2 font-medium text-blue-600 hover:text-blue-800 transition-all"
+                >
+                  <div className="relative">
+                    <ShoppingCart className="h-5 w-5 text-blue-600" />
+                    {count > 0 && (
+                      <Badge className="absolute -top-3 -right-3 h-4 w-4 flex items-center justify-center text-xs bg-blue-600 text-white rounded-full">
+                        {count}
+                      </Badge>
+                    )}
+                  </div>
+                  Cart
+                </Link>
+
+                
 
                 {isAdmin && (
                   <Link

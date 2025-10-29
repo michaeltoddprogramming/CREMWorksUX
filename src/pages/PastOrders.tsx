@@ -87,73 +87,65 @@ const PastOrders = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 flex items-center gap-2">
-        <ShoppingBag className="h-8 w-8" />
-        Past Orders
-      </h1>
+    <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8">
+        <div className="container ">
+            <h1 className="text-3xl font-bold mb-8 flex items-center gap-2 justify-center">
+            <ShoppingBag className="h-8 w-8" />
+            Past Orders
+            </h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-4">
-          {orders.map((order, idx) => {
-            const total = order.items.reduce(
-              (sum, item) => sum + item.product.price * item.quantity,
-              0
-            );
+            <div className="grid grid-cols-1 gap-8">
+            <div className="space-y-4">
+                {orders.map((order, idx) => {
+                const total = order.items.reduce(
+                    (sum, item) => sum + item.product.price * item.quantity,
+                    0
+                );
 
-            return (
-              <Card key={`id: order._id`}>
-                <CardHeader>
-                  <CardTitle>Order #{idx + 1}</CardTitle>
-                  <p className="text-sm text-muted-foreground">
-                    Ordered on: {new Date(order.orderedAt).toLocaleDateString()}
-                  </p>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {order.items.map((item, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <img
-                          src={item.product.image || "/placeholder.svg"}
-                          alt={item.product.name}
-                          className="w-20 h-20 object-cover rounded-lg"
-                        />
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg">{item.product.name}</h3>
-                          <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                return (
+                    <Card key={`id: order._id`}>
+                    <CardHeader>
+                        <CardTitle>Order #{idx + 1}</CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                        Ordered on: {new Date(order.orderedAt).toLocaleDateString()}
+                        </p>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                        {order.items.map((item, i) => (
+                            <div key={i} className="flex items-center gap-3">
+                            <img
+                                src={item.product.image || "/placeholder.svg"}
+                                alt={item.product.name}
+                                className="w-20 h-20 object-cover rounded-lg"
+                            />
+                            <div className="flex-1">
+                                <h3 className="font-semibold text-lg">{item.product.name}</h3>
+                                <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-2xl font-bold">
+                                R{(item.product.price * item.quantity).toFixed(2)}
+                                </p>
+                            </div>
+                            </div>
+                        ))}
+                        <Separator />
+                        <div className="flex justify-between font-bold text-lg">
+                            <span>Total:</span>
+                            <span>R{total.toFixed(2)}</span>
                         </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold">
-                            R{(item.product.price * item.quantity).toFixed(2)}
-                          </p>
                         </div>
-                      </div>
-                    ))}
-                    <Separator />
-                    <div className="flex justify-between font-bold text-lg">
-                      <span>Total:</span>
-                      <span>R{total.toFixed(2)}</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                    </CardContent>
+                    </Card>
+                );
+                })}
+            </div>
+            </div>
         </div>
-
-        <div className="lg:col-span-1">
-          <Card className="sticky top-4 p-6 text-center">
-            <p className="text-muted-foreground">Your past orders are listed here.</p>
-            <Button
-              className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white"
-              onClick={() => navigate("/gear")}
-            >
-              Browse More Products
-            </Button>
-          </Card>
-        </div>
-      </div>
     </div>
+
+
   );
 };
 
