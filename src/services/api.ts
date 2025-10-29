@@ -30,13 +30,22 @@ class ApiClient {
   ): Promise<T> {
     const url = `${API_BASE_URL}${endpoint}`;
     
+    // If the body is a FormData, do not set the Content-Type header so the browser
+    // can set the multipart boundary. Otherwise default to application/json.
+    const isFormData = options.body instanceof FormData;
+
+    const headers: Record<string, string> = {
+      ...this.getAuthHeaders(),
+      ...((options.headers as Record<string, string>) || {}),
+    };
+
+    if (!isFormData) {
+      headers['Content-Type'] = 'application/json';
+    }
+
     const config: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...this.getAuthHeaders(),
-        ...options.headers,
-      },
       ...options,
+      headers,
     };
 
     try {
@@ -159,9 +168,10 @@ class ApiClient {
   }
 
   async uploadImage(uploadData: UploadRequest): Promise<UploadResponse> {
+    // uploadData should be a FormData with the file under key 'image'
     return this.request<UploadResponse>('/upload', {
       method: 'POST',
-      body: JSON.stringify(uploadData),
+      body: uploadData as unknown as BodyInit,
     });
   }
 

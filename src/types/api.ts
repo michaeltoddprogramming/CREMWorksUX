@@ -127,11 +127,7 @@ export interface Order {
   createdAt: string;
 }
 
-export interface UploadRequest {
-  imageData: string;
-  fileName: string;
-}
+// For uploads we'll accept the browser's FormData (containing the file under key `image`).
+export type UploadRequest = FormData;
 
-export interface UploadResponse extends ApiResponse {
-  imageUrl: string;
-}
+export type UploadResponse = ApiResponse<{ imageUrl: string }>;
