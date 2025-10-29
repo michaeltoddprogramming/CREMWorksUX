@@ -120,6 +120,7 @@ class ApiClient {
   }
 
   async addToCart(cartData: AddToCartRequest): Promise<ApiResponse> {
+    console.log('Adding to cart:', cartData);
     return this.request<ApiResponse>('/cart/add', {
       method: 'POST',
       body: JSON.stringify(cartData),

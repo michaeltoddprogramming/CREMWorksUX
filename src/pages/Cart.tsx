@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,12 +10,15 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ShoppingCart, Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Cart = () => {
   const { items, updateQuantity, removeItem, total, clearCart } = useCart();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const didRun = useRef(false);
 
+  const [quantityChanged, setQuantity] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
@@ -33,12 +36,106 @@ const Cart = () => {
     paymentMethod: 'credit_card'
   });
 
-  const handleQuantityChange = (productId: string, newQuantity: number) => {
+  useEffect(() => {
+    console.log("These are the items in the cart:", items);
+    
+    const syncCart = async () => {
+      if (didRun.current) return;
+      didRun.current = true;
+      console.log("Cat is updated");
+      if (!isAuthenticated || items.length === 0) return;
+
+      try {
+        const token = localStorage.getItem("token");
+
+        // Loop through all items and call your add-to-cart endpoint
+        for (const item of items) {
+          await fetch("http://localhost:3000/api/cart/add", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              productId: item._id,
+              quantity: item.quantity,
+            }),
+          });
+        }
+      } catch (err) {
+        console.error("Failed to sync cart:", err);
+      }
+    };
+
+    syncCart();
+  }, [quantityChanged]);
+
+  const handleQuantityChange = async (productId: string, newQuantity: number) => {
+
     if (newQuantity < 1) {
+      
       removeItem(productId);
-    } else {
+      try {
+        const token = localStorage.getItem("token");
+  
+        // Loop through all items and call your add-to-cart endpoint
+          await fetch(`http://localhost:3000/api/cart/remove/${productId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+      } catch (err) {
+        console.error("Failed to sync cart:", err);
+      }
+    } 
+    else 
+    {
       updateQuantity(productId, newQuantity);
+      try {
+        const token = localStorage.getItem("token");
+
+        // Loop through all items and call your add-to-cart endpoint
+          await fetch("http://localhost:3000/api/cart/update", {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              productId: productId,
+              quantity: newQuantity,
+            }),
+          });
+      } catch (err) {
+        console.error("Failed to sync cart:", err);
+      }
     }
+    // if(didRun.current)
+    // {
+    //   didRun.current = false;
+    // }
+
+    // setQuantity(!quantityChanged);
+  };
+  
+  const handleRemoveItem = async (productId: string) => {      
+      removeItem(productId);
+      try {
+        const token = localStorage.getItem("token");
+  
+        // Loop through all items and call your add-to-cart endpoint
+          await fetch(`http://localhost:3000/api/cart/remove/${productId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+      } catch (err) {
+        console.error("Failed to sync cart:", err);
+      }
   };
 
   const handleCheckout = () => {
@@ -70,12 +167,23 @@ const Cart = () => {
       setIsProcessing(true);
       // await new Promise(resolve => setTimeout(resolve, 2000));
 
-      const response = await fetch('')
+      const response = await fetch('http://localhost:3000/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+      });
+
+      const data = await response.json();
       
 
-      const orderId = `ORD-${Date.now()}`;
-      
-      toast.success(`Order placed successfully! Order ID: ${orderId}`);
+      if (!response.ok) {
+        toast.error(data.message || "Failed to process order");
+        return;
+      }
+
+      toast.success(`Order placed successfully!`);
       clearCart();
       setShowCheckout(false);
       setCustomerInfo({
@@ -93,7 +201,9 @@ const Cart = () => {
         paymentMethod: 'credit_card'
       });
       navigate("/");
+
     } catch (error) {
+      console.error(error);
       toast.error("Failed to process order. Please try again.");
     } finally {
       setIsProcessing(false);
@@ -378,7 +488,7 @@ const Cart = () => {
                       </button>
                       <Button
                         className="bg-red-500 hover:bg-red-600 text-white px-2 py-1"
-                        onClick={() => removeItem(item._id)}
+                        onClick={() => handleRemoveItem(item._id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>

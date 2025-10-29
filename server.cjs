@@ -644,6 +644,7 @@ app.post('/api/checkout', authenticateToken, async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.user.id }).populate('items.productId');
     if (!cart || cart.items.length === 0) {
+      console.log('Checkout error: Cart is empty');
       return res.status(400).json({ status: 'failed', message: 'Cart is empty' });
     }
 
@@ -779,6 +780,7 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 
 // Create uploads directory if it doesn't exist
 const fs = require('fs');
+const { Console } = require('console');
 const uploadsDir = 'uploads';
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir);
