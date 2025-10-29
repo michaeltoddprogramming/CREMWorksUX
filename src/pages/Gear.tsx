@@ -389,8 +389,8 @@ const Gear = () => {
             ) : (
               <div className="space-y-4">
                 {filteredProducts.map((product) => (
-                  <div key={product._id} className="product-card group cursor-pointer flex" onClick={() => navigate(`/gear/${product._id}`)}>
-                    <div className="relative w-64 h-48 flex-shrink-0">
+                  <div key={product._id} className="product-card group cursor-pointer flex items-center" onClick={() => navigate(`/gear/${product._id}`)}>
+                    <div className="relative w-64 h-48 flex-shrink-0 ml-4">
                       <img
                         src={product.image}
                         alt={product.name}
