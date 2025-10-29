@@ -22,7 +22,7 @@ const About = () => {
               KwaZulu-Natal coast and the Vaal Dam.
             </p>
             <p className="text-lg text-muted-foreground mb-4">
-              What began as sharing gear recommendations in their WhatsApp group has grown 
+              What began as sharing gear recommendations in our WhatsApp group has grown 
               into South Africa's trusted online fishing tackle store. From surf fishing 
               at Sodwana Bay to bass angling in the Drakensberg, these four mates have 
               tested every piece of gear they sell.
