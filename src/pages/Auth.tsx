@@ -73,9 +73,28 @@ const AuthPage = () => {
       });
 
       if (response.status === "success") {
-        toast.success("Registration successful! Please log in.");
-        setSignupUser("");
-        setSignupPass("");
+        // If server returned token and user, log the user in immediately
+        const token = response.data?.token;
+        const userData = response.data?.user;
+
+        if (token && userData) {
+          localStorage.setItem('token', token);
+          login({
+            id: userData.id,
+            username: userData.username,
+            admin: userData.admin,
+          });
+          toast.success('Registration successful! Logged in.');
+          setSignupUser('');
+          setSignupPass('');
+          navigate('/');
+          return;
+        }
+
+        // Fallback if response didn't include token/user
+        toast.success('Registration successful! Please log in.');
+        setSignupUser('');
+        setSignupPass('');
       }
     } catch (error: any) {
       toast.error(error.message || "Registration failed");

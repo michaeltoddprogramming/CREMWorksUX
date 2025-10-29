@@ -36,7 +36,7 @@ const About = () => {
           <div className="order-1 md:order-2">
             <img
               src={shopOwnersImage}
-              alt="Chris, Ruan, Edward, and Mike - CREMFish founders"
+              alt="Cobus, Ruan, Euan, and Michael - CREMFish founders"
               className="rounded-lg shadow-[var(--shadow-medium)] w-full"
             />
           </div>

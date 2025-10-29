@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { apiClient } from "@/services/api";
 import { Product, CreateProductRequest } from "@/types/api";
 import { Plus, Edit, Trash2, Upload, Save, X } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -142,24 +143,21 @@ const AdminPanel = () => {
   const handleImageUpload = async (file: File, setImageUrl: (url: string) => void) => {
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      try {
-        const base64 = e.target?.result as string;
-        const response = await apiClient.uploadImage({
-          imageData: base64,
-          fileName: file.name,
-        });
-        
-        if (response.status === "success") {
-          setImageUrl(response.imageUrl);
-          toast.success("Image uploaded successfully!");
-        }
-      } catch (error: any) {
-        toast.error(error.message || "Failed to upload image");
+    try {
+      const form = new FormData();
+      form.append('image', file, file.name);
+
+      const response = await apiClient.uploadImage(form);
+
+      if (response.status === 'success' && response.data?.imageUrl) {
+        setImageUrl(response.data.imageUrl);
+        toast.success('Image uploaded successfully!');
+      } else {
+        throw new Error(response.message || 'Upload failed');
       }
-    };
-    reader.readAsDataURL(file);
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to upload image');
+    }
   };
 
   if (!isAuthenticated || !isAdmin) {
@@ -344,11 +342,29 @@ const AdminPanel = () => {
                             className="text-sm mb-1"
                             placeholder="Image URL"
                           />
-                          <img 
-                            src={editingProduct.image} 
-                            alt={editingProduct.name}
-                            className="w-12 h-12 object-cover rounded"
-                          />
+                          <div className="flex items-center gap-2">
+                            <img
+                              src={editingProduct.image}
+                              alt={editingProduct.name}
+                              className="w-12 h-12 object-cover rounded"
+                            />
+                            {/* Hidden file input per-product to allow replacing image while editing */}
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  handleImageUpload(file, (url) => setEditingProduct(prev => prev ? { ...prev, image: url } : null));
+                                }
+                              }}
+                              className="hidden"
+                              id={`image-upload-${product._id}`}
+                            />
+                            <Button type="button" onClick={() => document.getElementById(`image-upload-${product._id}`)?.click()}>
+                              <Upload className="h-4 w-4" />
+                            </Button>
+                          </div>
                         </div>
                       ) : (
                         <img 
@@ -515,7 +531,10 @@ const AdminPanel = () => {
                                 </AlertDialogHeader>
                                 <AlertDialogFooter>
                                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction onClick={() => handleDeleteProduct(product._id)}>
+                                  <AlertDialogAction
+                                    className={buttonVariants({ variant: "destructive" })}
+                                    onClick={() => handleDeleteProduct(product._id)}
+                                  >
                                     Delete
                                   </AlertDialogAction>
                                 </AlertDialogFooter>
