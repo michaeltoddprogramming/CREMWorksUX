@@ -87,7 +87,7 @@ const PastOrders = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4 py-8">
+    <div className="flex flex-col items-center min-h-screen px-4 py-8">
         <div className="container ">
             <h1 className="text-3xl font-bold mb-8 flex items-center gap-2 justify-center">
             <ShoppingBag className="h-8 w-8" />
@@ -98,7 +98,7 @@ const PastOrders = () => {
             <div className="space-y-4">
                 {orders.map((order, idx) => {
                 const total = order.items.reduce(
-                    (sum, item) => sum + item.product.price * item.quantity,
+                    (sum, item) => sum + ((item.product?.price || 0) * item.quantity),
                     0
                 );
 
@@ -112,24 +112,54 @@ const PastOrders = () => {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                        {order.items.map((item, i) => (
-                            <div key={i} className="flex items-center gap-3">
-                            <img
-                                src={item.product.image || "/placeholder.svg"}
-                                alt={item.product.name}
-                                className="w-20 h-20 object-cover rounded-lg"
-                            />
-                            <div className="flex-1">
-                                <h3 className="font-semibold text-lg">{item.product.name}</h3>
-                                <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
-                            </div>
-                            <div className="text-right">
-                                <p className="text-2xl font-bold">
-                                R{(item.product.price * item.quantity).toFixed(2)}
-                                </p>
-                            </div>
-                            </div>
-                        ))}
+                        {order.items.map((item, i) => {
+                            const product = item.product;
+                            if (!product) {
+    return (
+      <div key={i} className="flex items-center gap-3 text-muted-foreground">
+        <h3 className="font-semibold text-lg italic">Product Deleted</h3>
+        <p className="text-xs">Qty: {item.quantity}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div key={i} className="flex items-center gap-3">
+      <img
+        src={product.image || "/placeholder.svg"}
+        alt={product.name}
+        className="w-20 h-20 object-cover rounded-lg"
+      />
+      <div className="flex-1">
+        <h3 className="font-semibold text-lg">{product.name}</h3>
+        <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+      </div>
+      <div className="text-right">
+        <p className="text-2xl font-bold">
+          R{(product.price * item.quantity).toFixed(2)}
+        </p>
+      </div>
+    </div>
+  );
+                            // return (
+                            //     <div key={i} className="flex items-center gap-3">
+                            //     <img
+                            //         src={product.image || "/placeholder.svg"}
+                            //         alt={product.name}
+                            //         className="w-20 h-20 object-cover rounded-lg"
+                            //     />
+                            //     <div className="flex-1">
+                            //         <h3 className="font-semibold text-lg">{product.name}</h3>
+                            //         <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>
+                            //     </div>
+                            //     <div className="text-right">
+                            //         <p className="text-2xl font-bold">
+                            //         R{(product.price * item.quantity).toFixed(2)}
+                            //         </p>
+                            //     </div>
+                            //     </div>
+                            // );
+                        })}
                         <Separator />
                         <div className="flex justify-between font-bold text-lg">
                             <span>Total:</span>
