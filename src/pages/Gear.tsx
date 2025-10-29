@@ -21,7 +21,6 @@ const Gear = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState({ min: "", max: "" });
-  const [inStockOnly, setInStockOnly] = useState(false);
   const [minRating, setMinRating] = useState<number>(0);
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [brandSearchTerm, setBrandSearchTerm] = useState("");
@@ -103,7 +102,7 @@ const Gear = () => {
     const matchesPrice = (!priceRange.min || product.price >= parseFloat(priceRange.min)) &&
                         (!priceRange.max || product.price <= parseFloat(priceRange.max));
     
-    const matchesStock = !inStockOnly || product.stock > 0;
+    const matchesStock = product.stock > 0;
     
     const matchesRating = product.averageRating >= minRating;
 
@@ -128,7 +127,6 @@ const Gear = () => {
     setSelectedCategories([]);
     setSelectedBrands([]);
     setPriceRange({ min: "", max: "" });
-    setInStockOnly(false);
     setMinRating(0);
     scrollToTop();
   };
@@ -375,24 +373,6 @@ const Gear = () => {
                       <span className="text-xs text-gray-600 mt-1">{rating}</span>
                     </div>
                   ))}
-                </div>
-              </div>
-
-              <div>
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="inStock"
-                    checked={inStockOnly}
-                    onChange={(e) => {
-                      setInStockOnly(e.target.checked);
-                      scrollToTop();
-                    }}
-                    className="w-4 h-4 text-blue-600"
-                  />
-                  <label htmlFor="inStock" className="ml-2 text-sm text-gray-700 cursor-pointer">
-                    In Stock Only
-                  </label>
                 </div>
               </div>
             </div>
