@@ -29,7 +29,7 @@ const About = () => {
             </p>
             <p className="text-lg text-muted-foreground">
               Today, CREMFish serves anglers across South Africa with quality tackle, 
-              competitive prices in Rand, and advice from people who genuinely live and 
+              competitive prices, and advice from people who genuinely live and 
               breathe fishing in our beautiful country.
             </p>
           </div>
