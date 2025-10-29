@@ -55,7 +55,8 @@ const AdminPanel = () => {
 
   const loadProducts = async () => {
     try {
-      const productList = await apiClient.getProducts();
+      // request a large limit so admin sees all products
+      const productList = await apiClient.getProducts({ limit: 1000 });
       setProducts(productList);
     } catch (error) {
       console.error("Error loading products:", error);
@@ -173,7 +174,7 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full px-4 py-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Admin Panel</h1>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
@@ -306,13 +307,13 @@ const AdminPanel = () => {
         </Dialog>
       </div>
 
-      <Card>
+      <Card className="w-full max-w-none">
         <CardHeader>
           <CardTitle>Products</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
+          <div className="overflow-x-auto w-full">
+            <Table className="min-w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-20">Image</TableHead>
@@ -342,13 +343,12 @@ const AdminPanel = () => {
                             className="text-sm mb-1"
                             placeholder="Image URL"
                           />
-                          <div className="flex items-center gap-2">
+                          <div className="flex flex-col items-start gap-2">
                             <img
                               src={editingProduct.image}
                               alt={editingProduct.name}
-                              className="w-12 h-12 object-cover rounded"
+                              className="w-24 h-24 object-cover rounded"
                             />
-                            {/* Hidden file input per-product to allow replacing image while editing */}
                             <input
                               type="file"
                               accept="image/*"
@@ -359,10 +359,17 @@ const AdminPanel = () => {
                                 }
                               }}
                               className="hidden"
-                              id={`image-upload-${product._id}`}
                             />
-                            <Button type="button" onClick={() => document.getElementById(`image-upload-${product._id}`)?.click()}>
-                              <Upload className="h-4 w-4" />
+                            <Button
+                              type="button"
+                              size="sm"
+                              onClick={(e) => {
+                                const wrapper = (e.currentTarget as HTMLElement).closest('div');
+                                const input = wrapper?.querySelector('input[type=file]') as HTMLInputElement | null;
+                                input?.click();
+                              }}
+                            >
+                              Upload Image
                             </Button>
                           </div>
                         </div>
@@ -431,12 +438,12 @@ const AdminPanel = () => {
                           type="number"
                           step="0.01"
                           min="0"
-                          value={editingProduct.price || ''}
+                          value={editingProduct.price ?? ''}
                           onChange={(e) => {
                             const val = e.target.value;
                             setEditingProduct(prev => prev ? { ...prev, price: val === '' ? 0 : parseFloat(val) } : null);
                           }}
-                          className="text-sm"
+                          className="text-sm w-32"
                         />
                       ) : (
                         `R${product.price.toFixed(2)}`
@@ -447,12 +454,12 @@ const AdminPanel = () => {
                         <Input
                           type="number"
                           min="0"
-                          value={editingProduct.stock || ''}
+                          value={editingProduct.stock ?? ''}
                           onChange={(e) => {
                             const val = e.target.value;
                             setEditingProduct(prev => prev ? { ...prev, stock: val === '' ? 0 : parseInt(val) } : null);
                           }}
-                          className="text-sm"
+                          className="text-sm w-24"
                         />
                       ) : (
                         product.stock

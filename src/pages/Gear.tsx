@@ -39,7 +39,8 @@ const Gear = () => {
 
   const loadProducts = async () => {
     try {
-      const productList = await apiClient.getProducts();
+      // load many products for browsing; the API defaults to limit=20
+      const productList = await apiClient.getProducts({ limit: 1000 });
       setProducts(productList);
     } catch (error) {
       console.error("Error loading products:", error);
