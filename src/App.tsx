@@ -15,6 +15,7 @@ import Auth from "./pages/Auth";
 import Cart from "./pages/Cart";
 import AdminPanel from "./pages/AdminPanel";
 import NotFound from "./pages/NotFound";
+import PastOrders from "./pages/PastOrders";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ const App = () => (
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/admin" element={<AdminPanel />} />
                 <Route path="*" element={<NotFound />} />
+                <Route path="/orders" element={<PastOrders />} />
               </Routes>
             </Layout>
           </BrowserRouter>

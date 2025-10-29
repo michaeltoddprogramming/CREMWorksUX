@@ -22,7 +22,14 @@ mongoose.connect(process.env.MONGO_URI, {
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  admin: { type: Boolean, default: false }
+  admin: { type: Boolean, default: false },
+  orders: [{
+    items: [{
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+      quantity: { type: Number, required: true },
+    }],
+    orderedAt: { type: Date, default: Date.now }
+  }]
 }, { timestamps: true });
 
 const User = mongoose.model('User', userSchema);
@@ -52,25 +59,25 @@ const reviewSchema = new mongoose.Schema({
 
 const Review = mongoose.model('Review', reviewSchema);
 
-const orderSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  items: [{
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
-    quantity: { type: Number, required: true },
-    price: { type: Number, required: true }
-  }],
-  totalAmount: { type: Number, required: true },
-  customerInfo: {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    address: { type: String, required: true },
-    city: { type: String, required: true },
-    zipCode: { type: String, required: true }
-  },
-  status: { type: String, default: 'pending' }
-}, { timestamps: true });
+// const orderSchema = new mongoose.Schema({
+//   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+//   items: [{
+//     productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
+//     quantity: { type: Number, required: true },
+//     price: { type: Number, required: true }
+//   }],
+//   totalAmount: { type: Number, required: true },
+//   customerInfo: {
+//     name: { type: String, required: true },
+//     email: { type: String, required: true },
+//     address: { type: String, required: true },
+//     city: { type: String, required: true },
+//     zipCode: { type: String, required: true }
+//   },
+//   status: { type: String, default: 'pending' }
+// }, { timestamps: true });
 
-const Order = mongoose.model('Order', orderSchema);
+// const Order = mongoose.model('Order', orderSchema);
 
 const cartSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -506,68 +513,249 @@ app.delete('/api/cart/clear', authenticateToken, async (req, res) => {
 });
 
 // Checkout Route
+// app.post('/api/checkout', authenticateToken, async (req, res) => {
+//   try {
+//     const { customerInfo } = req.body;
+    
+//     const cart = await Cart.findOne({ userId: req.user.id }).populate('items.productId');
+//     if (!cart || cart.items.length === 0) {
+//       return res.status(400).json({ status: 'failed', message: 'Cart is empty' });
+//     }
+    
+//     // Calculate total
+//     let totalAmount = 0;
+//     const orderItems = [];
+    
+//     for (const item of cart.items) {
+//       const product = item.productId;
+//       if (product.stock < item.quantity) {
+//         return res.status(400).json({ 
+//           status: 'failed', 
+//           message: `Insufficient stock for ${product.name}` 
+//         });
+//       }
+      
+//       const itemTotal = product.price * item.quantity;
+//       totalAmount += itemTotal;
+      
+//       orderItems.push({
+//         productId: product._id,
+//         quantity: item.quantity,
+//         price: product.price
+//       });
+      
+//       // Update product stock
+//       await Product.findByIdAndUpdate(product._id, {
+//         $inc: { stock: -item.quantity }
+//       });
+//     }
+    
+//     // Create order
+//     const order = new Order({
+//       userId: req.user.id,
+//       items: orderItems,
+//       totalAmount,
+//       customerInfo
+//     });
+    
+//     await order.save();
+    
+//     // Clear cart
+//     await Cart.findOneAndUpdate(
+//       { userId: req.user.id },
+//       { items: [] }
+//     );
+    
+//     res.json({
+//       status: 'success',
+//       message: 'Order placed successfully',
+//       data: order
+//     });
+//   } catch (error) {
+//     res.status(500).json({ status: 'failed', message: 'Server error', error: error.message });
+//   }
+// });
+
+// app.post('/api/checkout', authenticateToken, async (req, res) => {
+//   try {
+//     const cart = await Cart.findOne({ userId: req.user.id }).populate('items.productId');
+//     if (!cart || cart.items.length === 0) {
+//       return res.status(400).json({ status: 'failed', message: 'Cart is empty' });
+//     }
+
+//     // Prepare order items and check stock
+//     const orderItems = [];
+//     for (const item of cart.items) {
+//       const product = item.productId;
+//       if (product.stock < item.quantity) {
+//         return res.status(400).json({ 
+//           status: 'failed', 
+//           message: `Insufficient stock for ${product.name}` 
+//         });
+//       }
+
+//       orderItems.push({
+//         productId: product._id,
+//         quantity: item.quantity
+//       });
+
+//       // Update product stock
+//       await Product.findByIdAndUpdate(product._id, {
+//         $inc: { stock: -item.quantity }
+//       });
+//     }
+
+//     const orderedAt = new Date();
+
+//     // Add order to user's orders array
+//     // await User.findByIdAndUpdate(req.user.id, {
+//     //     $push: { orders: { items: orderItems, orderedAt } }
+//     // });
+
+//     const updatedUser = await User.findByIdAndUpdate(
+//       req.user.id,
+//       { $push: { orders: { items: orderItems, orderedAt } } },
+//       { new: true, runValidators: true }
+//     );
+
+//     if (!updatedUser) {
+//       return res.status(404).json({ status: 'failed', message: 'User not found, order not saved' });
+//     }
+
+//     // Clear cart
+//     await Cart.findOneAndUpdate(
+//       { userId: req.user.id },
+//       { items: [] }
+//     );
+
+//     res.json({
+//       status: 'success',
+//       message: 'Order placed successfully',
+//       data: { items: orderItems, orderedAt: orderedAt }
+//     });
+
+//   } catch (error) {
+//     res.status(500).json({ status: 'failed', message: 'Server error', error: error.message });
+//   }
+// });
+
+
 app.post('/api/checkout', authenticateToken, async (req, res) => {
   try {
-    const { customerInfo } = req.body;
-    
     const cart = await Cart.findOne({ userId: req.user.id }).populate('items.productId');
     if (!cart || cart.items.length === 0) {
       return res.status(400).json({ status: 'failed', message: 'Cart is empty' });
     }
-    
-    // Calculate total
-    let totalAmount = 0;
+
+    // Prepare order items and check stock
     const orderItems = [];
-    
     for (const item of cart.items) {
       const product = item.productId;
+
       if (product.stock < item.quantity) {
         return res.status(400).json({ 
           status: 'failed', 
           message: `Insufficient stock for ${product.name}` 
         });
       }
-      
-      const itemTotal = product.price * item.quantity;
-      totalAmount += itemTotal;
-      
+
       orderItems.push({
         productId: product._id,
-        quantity: item.quantity,
-        price: product.price
+        quantity: item.quantity
       });
-      
-      // Update product stock
+
+      // Deduct stock
       await Product.findByIdAndUpdate(product._id, {
         $inc: { stock: -item.quantity }
       });
     }
-    
-    // Create order
-    const order = new Order({
-      userId: req.user.id,
-      items: orderItems,
-      totalAmount,
-      customerInfo
-    });
-    
-    await order.save();
-    
+
+    const orderedAt = new Date();
+
+    // Add order to user's orders array
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ status: 'failed', message: 'User not found, order not saved' });
+    }
+
+    user.orders.push({ items: orderItems, orderedAt });
+    await user.save();
+
     // Clear cart
-    await Cart.findOneAndUpdate(
-      { userId: req.user.id },
-      { items: [] }
-    );
-    
+    cart.items = [];
+    await cart.save();
+
     res.json({
       status: 'success',
       message: 'Order placed successfully',
-      data: order
+      data: { items: orderItems, orderedAt }
+    });
+
+  } catch (error) {
+    console.error('Checkout error:', error);
+    res.status(500).json({ status: 'failed', message: 'Server error', error: error.message });
+  }
+});
+
+
+//get all past orders
+// Get all orders from all users (Admin only)
+app.get('/api/all-user-orders', authenticateToken, async (req, res) => {
+  try {
+    if (!req.user.admin) {
+      return res.status(403).json({ status: 'failed', message: 'Admin access required' });
+    }
+
+    const users = await User.find().populate('orders.items.productId');
+    
+    // Flatten the orders with user info
+    const allOrders = users.flatMap(user =>
+      user.orders.map(order => ({
+        userId: user._id,
+        username: user.username,
+        items: order.items,
+        orderedAt: order.orderedAt
+      }))
+    );
+
+    res.json({
+      status: 'success',
+      message: 'All user orders retrieved successfully',
+      data: allOrders
     });
   } catch (error) {
     res.status(500).json({ status: 'failed', message: 'Server error', error: error.message });
   }
 });
+
+// Get past orders for the logged-in user
+app.get('/api/my-orders', authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('orders.items.productId');
+
+    if (!user) {
+      return res.status(404).json({ status: 'failed', message: 'User not found' });
+    }
+
+    res.json({
+      status: 'success',
+      message: 'Past orders retrieved successfully',
+      data: user.orders.map(order => ({
+        items: order.items.map(i => ({
+          product: i.productId,
+          quantity: i.quantity
+        })),
+        orderedAt: order.orderedAt
+      }))
+    });
+  } catch (error) {
+    res.status(500).json({ status: 'failed', message: 'Server error', error: error.message });
+  }
+});
+
+
+
+
 
 // Upload Route
 app.post('/api/upload', upload.single('image'), (req, res) => {
@@ -588,24 +776,6 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
   }
 });
 
-// Get Orders (for admin)
-app.get('/api/orders', authenticateToken, async (req, res) => {
-  try {
-    if (!req.user.admin) {
-      return res.status(403).json({ status: 'failed', message: 'Admin access required' });
-    }
-    
-    const orders = await Order.find().populate('userId').populate('items.productId').sort({ createdAt: -1 });
-    
-    res.json({
-      status: 'success',
-      message: 'Orders retrieved successfully',
-      data: orders
-    });
-  } catch (error) {
-    res.status(500).json({ status: 'failed', message: 'Server error', error: error.message });
-  }
-});
 
 // Create uploads directory if it doesn't exist
 const fs = require('fs');

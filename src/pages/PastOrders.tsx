@@ -64,14 +64,10 @@ const Cart = () => {
       return;
     }
 
-    // setIsProcessing(true);
-    
-    try {
-      setIsProcessing(true);
-      // await new Promise(resolve => setTimeout(resolve, 2000));
+    setIsProcessing(true);
 
-      const response = await fetch('')
-      
+    try {
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       const orderId = `ORD-${Date.now()}`;
       

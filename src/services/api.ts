@@ -163,6 +163,18 @@ class ApiClient {
       body: JSON.stringify(uploadData),
     });
   }
+
+  async createOrder(checkoutData: CheckoutRequest): Promise<ApiResponse<{ orderId: string }>> {
+    return this.request<ApiResponse<{ orderId: string }>>('/orders', {
+      method: 'POST',
+      body: JSON.stringify(checkoutData),
+    });
+  }
+
+  // async getUserOrders(email: string): Promise<ApiResponse<Order[]>> {
+  //   return this.request<ApiResponse<Order[]>>(`/orders/${email}`);
+  // }
+
 }
 
 export const apiClient = new ApiClient();
