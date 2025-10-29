@@ -40,7 +40,8 @@ const Home = () => {
         <div className="container mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Why Choose CREMFish?</h2>
           <div className="grid grid-cols-3 gap-8">
-            <Card className="border-2 hover:shadow-[var(--shadow-medium)] transition-all hover:scale-105">
+            {/* <Card className="border-2 hover:shadow-[var(--shadow-medium)] transition-all hover:scale-105"> */}
+            <Card className="border-2">
               <CardContent className="pt-6 text-center">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <Award className="h-8 w-8 text-primary" />
@@ -52,7 +53,7 @@ const Home = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-[var(--shadow-medium)] transition-all hover:scale-105">
+            <Card className="border-2">
               <CardContent className="pt-6 text-center">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <Users className="h-8 w-8 text-primary" />
@@ -64,7 +65,7 @@ const Home = () => {
               </CardContent>
             </Card>
 
-            <Card className="border-2 hover:shadow-[var(--shadow-medium)] transition-all hover:scale-105">
+            <Card className="border-2">
               <CardContent className="pt-6 text-center">
                 <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <Star className="h-8 w-8 text-primary" />

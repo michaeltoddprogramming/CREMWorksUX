@@ -316,6 +316,7 @@ const Cart = () => {
                     <Label htmlFor="phone" className="form-label">Phone Number</Label>
                     <Input
                       id="phone"
+                      type="number"
                       className="form-input"
                       value={customerInfo.phone}
                       onChange={(e) => handleInputChange('phone', e.target.value)}
@@ -364,6 +365,7 @@ const Cart = () => {
                     <Label htmlFor="zipCode" className="form-label">Postal Code *</Label>
                     <Input
                       id="zipCode"
+                      type="number"
                       className="form-input"
                       value={customerInfo.address.zipCode}
                       onChange={(e) => handleInputChange('address.zipCode', e.target.value)}

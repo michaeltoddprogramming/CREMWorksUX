@@ -86,7 +86,7 @@ const About = () => {
           </div>
         </div>
 
-        <Card className="bg-muted/30 border-2">
+        {/* <Card className="bg-muted/30 border-2">
           <CardContent className="p-12">
             <h2 className="text-3xl font-bold mb-6">Our Story</h2>
             <div className="space-y-4 text-lg text-muted-foreground">
@@ -116,7 +116,7 @@ const About = () => {
               </p>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

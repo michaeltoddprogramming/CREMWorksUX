@@ -166,7 +166,8 @@ const Gear = () => {
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex gap-8">
-          <div className="w-64 flex-shrink-0 sticky top-4 self-start">
+          {/* <div className="w-64 flex-shrink-0 sticky top-1 self-start"> */}
+          <div className="w-64 flex-shrink-0 self-start">
             <div className="filter-section bg-white p-6 rounded-lg shadow-sm border">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
