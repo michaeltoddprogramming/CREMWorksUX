@@ -78,8 +78,19 @@ class ApiClient {
     });
   }
 
-  async getProducts(): Promise<Product[]> {
-    const response = await this.request<ApiResponse<{ products: Product[], totalPages: number, currentPage: number, total: number }>>('/products');
+  async getProducts(params?: { page?: number; limit?: number; category?: string; search?: string; minPrice?: number; maxPrice?: number }): Promise<Product[]> {
+    const qs = new URLSearchParams();
+    if (params) {
+      if (params.page !== undefined) qs.set('page', String(params.page));
+      if (params.limit !== undefined) qs.set('limit', String(params.limit));
+      if (params.category) qs.set('category', params.category);
+      if (params.search) qs.set('search', params.search);
+      if (params.minPrice !== undefined) qs.set('minPrice', String(params.minPrice));
+      if (params.maxPrice !== undefined) qs.set('maxPrice', String(params.maxPrice));
+    }
+
+    const endpoint = `/products${qs.toString() ? `?${qs.toString()}` : ''}`;
+    const response = await this.request<ApiResponse<{ products: Product[]; totalPages: number; currentPage: number; total: number }>>(endpoint);
     return response.data?.products || [];
   }
 
